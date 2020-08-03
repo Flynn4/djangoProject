@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Logged Out
+{% endblock %}
+
+{% block css %}
+    <meta http-equiv="refresh" content="1;{% url 'wbl:index' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Signing out...</h1>
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+{% endblock %}
