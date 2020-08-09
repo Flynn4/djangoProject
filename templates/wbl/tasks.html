@@ -1,30 +1,40 @@
 {% extends 'base.html' %}
+{% load static %}
 <!DOCTYPE html>
 
-<!-- Content Wrapper. Contains page content -->
-
-<!-- Content Header (Page header) -->
-{% block header %}
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Projects</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Projects</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+{% block css %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{% static 'adminlte/dist/css/adminlte.min.css' %}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 {% endblock %}
-<!-- Main content -->
-{% block content %}
-    <section class="content">
 
+<!-- Site wrapper -->
+
+    <!-- Content Wrapper. Contains page content -->
+    {% block breadcrumb %}
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Projects</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Projects</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+    {% endblock %}
+    <!-- Main content -->
+    {% block content %}
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
@@ -589,7 +599,5 @@
         </div>
         <!-- /.card -->
 
-    </section>
-{% endblock %}
-<!-- /.content -->
-
+    {% endblock %}
+    <!-- /.content -->
