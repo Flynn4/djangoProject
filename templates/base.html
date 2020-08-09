@@ -12,7 +12,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     {% block title %}
     {% endblock %}
-{#    <title>AdminLTE 3 | Starter</title>#}
+    {#    <title>AdminLTE 3 | Starter</title>#}
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{% static "adminlte/plugins/fontawesome-free/css/all.min.css" %}">
@@ -34,7 +34,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="{% static "adminlte/index3.html" %}" class="nav-link">Home</a>
+                <a href="{% url 'wbl:index' %}" class="nav-link">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Contact</a>
@@ -195,66 +195,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-{#                            <li class="nav-item">#}
-{#                                <a href="#" class="nav-link active">#}
-{#                                    <i class="far fa-circle nav-icon"></i>#}
-{#                                    <p>Active Page</p>#}
-{#                                </a>#}
-{#                            </li>#}
-{#                            <li class="nav-item">#}
-{#                                <a href="#" class="nav-link">#}
-{#                                    <i class="far fa-circle nav-icon"></i>#}
-{#                                    <p>Inactive Page</p>#}
-{#                                </a>#}
-{#                            </li>#}
+                            {#                            <li class="nav-item">#}
+                            {#                                <a href="#" class="nav-link active">#}
+                            {#                                    <i class="far fa-circle nav-icon"></i>#}
+                            {#                                    <p>Active Page</p>#}
+                            {#                                </a>#}
+                            {#                            </li>#}
+                            {#                            <li class="nav-item">#}
+                            {#                                <a href="#" class="nav-link">#}
+                            {#                                    <i class="far fa-circle nav-icon"></i>#}
+                            {#                                    <p>Inactive Page</p>#}
+                            {#                                </a>#}
+                            {#                            </li>#}
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="{% url 'wbl:index' %}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'wbl:profile' %}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Personal Details</p>
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Simple Link
-                                <span class="right badge badge-danger">New</span>
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-edit"></i>
-                            <p>
-                                Forms
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/forms/general.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>General Elements</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/forms/advanced.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Advanced Elements</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/forms/editors.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Editors</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/forms/validation.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Validation</p>
+                                <a href="pages/calendar.html" class="nav-link">
+                                    <i class="nav-icon far fa-calendar-alt"></i>
+                                    <p>
+                                        Calendar
+                                        <span class="badge badge-info right">2</span>
+                                    </p>
                                 </a>
                             </li>
                         </ul>
@@ -275,25 +246,48 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/examples/project-add.html" class="nav-link">
+                                <a href="{% url 'wbl:task_add' %}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Task Add</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/examples/project-edit.html" class="nav-link">
+                                <a href="{% url 'wbl:task_edit' %}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Task Edit</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/examples/project-detail.html" class="nav-link">
+                                <a href="{% url 'wbl:task_detail' %}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Task Detail</p>
                                 </a>
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Evaluations
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'wbl:peer_review' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Peer Review</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/forms/advanced.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Test</p>
+                </a>
+              </li>
+            </ul>
+          </li>
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon far fa-envelope"></i>
@@ -323,98 +317,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon far fa-plus-square"></i>
-                            <p>
-                                Extras
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="pages/examples/login.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Login</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/register.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Register</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/forgot-password.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Forgot Password</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/recover-password.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Recover Password</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/lockscreen.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Lockscreen</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/legacy-user-menu.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Legacy User Menu</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/language-menu.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Language Menu</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/404.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Error 404</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/500.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Error 500</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/pace.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Pace</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/examples/blank.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Blank Page</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="starter.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Starter Page</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/calendar.html" class="nav-link">
-                            <i class="nav-icon far fa-calendar-alt"></i>
-                            <p>
-                                Calendar
-                                <span class="badge badge-info right">2</span>
-                            </p>
-                        </a>
-                    </li>
                 </ul>
             </nav>
 
@@ -425,7 +327,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        {% block breadcrumb %}
+        {% block header %}
         {% endblock %}
         <!-- Content Header (Page header) -->
 {#        <div class="content-header">#}
@@ -450,67 +352,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="container-fluid">
                 {% block content %}
                 {% endblock %}
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-
-                                <p class="card-text">
-                                    Some quick example text to build on the card title and make up the bulk of the
-                                    card's
-                                    content.
-                                </p>
-
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div>
-
-                        <div class="card card-primary card-outline">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-
-                                <p class="card-text">
-                                    Some quick example text to build on the card title and make up the bulk of the
-                                    card's
-                                    content.
-                                </p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div><!-- /.card -->
-                    </div>
-                    <!-- /.col-md-6 -->
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="m-0">Featured</h5>
-                            </div>
-                            <div class="card-body">
-                                <h6 class="card-title">Special title treatment</h6>
-
-                                <p class="card-text">With supporting text below as a natural lead-in to additional
-                                    content.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div>
-
-                        <div class="card card-primary card-outline">
-                            <div class="card-header">
-                                <h5 class="m-0">Featured</h5>
-                            </div>
-                            <div class="card-body">
-                                <h6 class="card-title">Special title treatment</h6>
-
-                                <p class="card-text">With supporting text below as a natural lead-in to additional
-                                    content.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.col-md-6 -->
-                </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
