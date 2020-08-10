@@ -1,7 +1,6 @@
 from django.shortcuts import render
+from .models import *
 
-
-# Create your views here.
 
 def index(request):
     # Add all details into dict
@@ -17,7 +16,9 @@ def dashboard(request):
 
 
 def tasks(request):
-    return render(request, 'wbl/tasks.html')
+    dict ={}
+    dict['tasks'] = Task.objects.all()
+    return render(request, 'wbl/tasks.html', dict)
 
 
 def task_add(request):
