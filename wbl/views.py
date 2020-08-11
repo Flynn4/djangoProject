@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from .models import *
 
 
@@ -24,6 +24,12 @@ def tasks(request):
 def task_add(request):
     return render(request, 'wbl/task-add.html')
 
+def add_task(request):
+    name = request.POST.get('name')
+    print(name)
+    detail = request.POST.get('detail')
+    Task.objects.create(name=name, detail=detail)
+    return HttpResponse('OK')
 
 def task_edit(request):
     return render(request, 'wbl/task-edit.html')
