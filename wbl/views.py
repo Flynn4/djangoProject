@@ -26,9 +26,9 @@ def task_add(request):
 
 def add_task(request):
     name = request.POST.get('name')
-    print(name)
     detail = request.POST.get('detail')
-    Task.objects.create(name=name, detail=detail)
+    limit_time = request.POST.get('limit_time')
+    Task.objects.create(name=name, detail=detail, limit_time=limit_time)
     return HttpResponse('OK')
 
 def task_edit(request):

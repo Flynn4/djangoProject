@@ -1,5 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
 <!DOCTYPE html>
+{% block css %}
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/daterangepicker/daterangepicker.css' %}">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet"
+          href="{% static 'adminlte/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet"
+          href="{% static 'adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/select2/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+    <!-- Bootstrap4 Duallistbox -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+{% endblock %}
 <!-- Content Wrapper. Contains page content -->
 <!-- Content Header (Page header) -->
 {% block header %}
@@ -53,42 +73,22 @@
                                 <option>Success</option>
                             </select>
                         </div>
+                        <!-- Date -->
                         <div class="form-group">
-                            <label for="inputClientCompany">Client Company</label>
-                            <input type="text" id="inputClientCompany" class="form-control">
+                            <label>Limit Date:</label>
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input"
+                                       data-target="#reservationdate"/>
+                                <div class="input-group-append" data-target="#reservationdate"
+                                     data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
                         </div>
+                        <!-- /.form group -->
                         <div class="form-group">
                             <label for="inputTaskLeader">Task Leader</label>
                             <input type="text" id="inputTaskLeader" class="form-control">
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </div>
-            <div class="col-md-6">
-                <div class="card card-secondary">
-                    <div class="card-header">
-                        <h3 class="card-title">Budget</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"
-                                    data-toggle="tooltip" title="Collapse">
-                                <i class="fas fa-minus"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="inputEstimatedBudget">Estimated budget</label>
-                            <input type="number" id="inputEstimatedBudget" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputSpentBudget">Total amount spent</label>
-                            <input type="number" id="inputSpentBudget" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEstimatedDuration">Estimated project duration</label>
-                            <input type="number" id="inputEstimatedDuration" class="form-control">
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -108,21 +108,114 @@
 {% endblock %}
 
 {% block script %}
-<script>
-    function AjaxTaskAdd() {
-        $.ajax({
-            url: {% url 'wbl:add_task' %},
-            type: 'POST',
-            data: {
-                'name': $('#inputName').val(),
-                'detail': $('#inputDescription').val(),
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-            success: function (data) {
-                console.log(data);
-            }
+    <!-- Select2 -->
+    <script src="{% static 'adminlte/plugins/select2/js/select2.full.min.js' %}"></script>
+    <!-- Bootstrap4 Duallistbox -->
+    <script src="{% static 'adminlte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+    <!-- InputMask -->
+    <script src="{% static 'adminlte/plugins/moment/moment.min.js' %}"></script>
+    <script src="{% static 'adminlte/plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+    <!-- date-range-picker -->
+    <script src="{% static 'adminlte/plugins/daterangepicker/daterangepicker.js' %}"></script>
+    <!-- bootstrap color picker -->
+    <script src="{% static 'adminlte/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js' %}"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="{% static 'adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <!-- Bootstrap Switch -->
+    <script src="{% static 'adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+    <script src="{% static 'adminlte/dist/js/adminlte.min.js' %}"></script>
+    <!-- Page script -->
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+
+            //Datemask dd/mm/yyyy
+            $('#datemask').inputmask('dd/mm/yyyy', {'placeholder': 'dd/mm/yyyy'})
+            //Datemask2 mm/dd/yyyy
+            $('#datemask2').inputmask('mm/dd/yyyy', {'placeholder': 'mm/dd/yyyy'})
+            //Money Euro
+            $('[data-mask]').inputmask()
+
+            //Date range picker
+            $('#reservationdate').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+            //Date range picker
+            $('#reservation').daterangepicker()
+            //Date range picker with time picker
+            $('#reservationtime').daterangepicker({
+                timePicker: true,
+                timePickerIncrement: 30,
+                locale: {
+                    format: 'MM/DD/YYYY hh:mm A'
+                }
+            })
+            //Date range as a button
+            $('#daterange-btn').daterangepicker(
+                {
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    },
+                    startDate: moment().subtract(29, 'days'),
+                    endDate: moment()
+                },
+                function (start, end) {
+                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+                }
+            )
+
+            //Timepicker
+            $('#timepicker').datetimepicker({
+                format: 'LT'
+            })
+
+            //Bootstrap Duallistbox
+            $('.duallistbox').bootstrapDualListbox()
+
+            //Colorpicker
+            $('.my-colorpicker1').colorpicker()
+            //color picker with addon
+            $('.my-colorpicker2').colorpicker()
+
+            $('.my-colorpicker2').on('colorpickerChange', function (event) {
+                $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+            });
+
+            $("input[data-bootstrap-switch]").each(function () {
+                $(this).bootstrapSwitch('state', $(this).prop('checked'));
+            });
+
         })
-    }
-</script>
+    </script>
+    <script>
+        function AjaxTaskAdd() {
+            var date = new Date();
+            console.log($('#reservationdate').find('input').val())
+            $.ajax({
+                url: {% url 'wbl:add_task' %},
+                type: 'POST',
+                data: {
+                    'name': $('#inputName').val(),
+                    'detail': $('#inputDescription').val(),
+                    'limit_time': $('#reservationdate').find('input').val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    console.log(data);
+                }
+            })
+        }
+    </script>
 {% endblock %}
 <!-- /.content -->
