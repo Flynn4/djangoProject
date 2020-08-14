@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="{% static 'adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
     <!-- Bootstrap4 Duallistbox -->
     <link rel="stylesheet" href="{% static 'adminlte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/toastr/toastr.min.css' %}">
+
 {% endblock %}
 <!-- Content Wrapper. Contains page content -->
 <!-- Content Header (Page header) -->
@@ -99,7 +102,8 @@
         <div class="row">
             <div class="col-12">
                 <a href="#" class="btn btn-secondary">Cancel</a>
-                <input type="submit" value="Create new Porject" class="btn btn-success float-right"
+                <input id="createNewTask" type="submit" value="Create new Task"
+                       class="btn btn-success float-right"
                        onclick="AjaxTaskAdd()">
 
             </div>
@@ -124,6 +128,8 @@
     <!-- Bootstrap Switch -->
     <script src="{% static 'adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
     <script src="{% static 'adminlte/dist/js/adminlte.min.js' %}"></script>
+    <!-- Toastr -->
+    <script src="{% static 'adminlte/plugins/toastr/toastr.min.js' %}"></script>
     <!-- Page script -->
     <script>
         $(function () {
@@ -200,21 +206,38 @@
     </script>
     <script>
         function AjaxTaskAdd() {
-            var date = new Date();
-            console.log($('#reservationdate').find('input').val())
-            $.ajax({
-                url: {% url 'wbl:add_task' %},
-                type: 'POST',
-                data: {
-                    'name': $('#inputName').val(),
-                    'detail': $('#inputDescription').val(),
-                    'limit_time': $('#reservationdate').find('input').val(),
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    console.log(data);
-                }
-            })
+            $('#createNewTask').attr('disabled', 'disabled')
+            if ($('#reservationdate').find('input').val() === "") {
+                toastr.error('Error! Please enter the time!')
+                $('#createNewTask').removeAttr('disabled')
+            } else if ($('#inputName').val() === "") {
+                toastr.error('Error! Please enter task name!')
+                $('#createNewTask').removeAttr('disabled')
+            } else if ($('#inputDescription').val() === "") {
+                toastr.error('Error! Please enter task detail!');
+                $('#createNewTask').removeAttr('disabled');
+            } else {
+                console.log($('#reservationdate').find('input').val());
+                $.ajax({
+                    url: {% url 'wbl:add_task' %},
+                    type: 'POST',
+                    data: {
+                        'name': $('#inputName').val(),
+                        'detail': $('#inputDescription').val(),
+                        'limit_time': $('#reservationdate').find('input').val(),
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        if (data === 'OK') {
+                            toastr.success('Add Task Successful!')
+                        } else {
+                            toastr.error('Error! Please check the name and time!')
+                            $('#createNewTask').removeAttr('disabled')
+                        }
+                    }
+                })
+            }
         }
     </script>
 {% endblock %}

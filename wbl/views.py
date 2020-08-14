@@ -1,3 +1,5 @@
+import time
+
 from django.shortcuts import render, HttpResponse
 from .models import *
 
@@ -28,8 +30,12 @@ def add_task(request):
     name = request.POST.get('name')
     detail = request.POST.get('detail')
     limit_time = request.POST.get('limit_time')
-    Task.objects.create(name=name, detail=detail, limit_time=limit_time)
-    return HttpResponse('OK')
+    if Task.objects.filter(name=name).count() == 1:
+        return HttpResponse('Error')
+    else:
+        Task.objects.create(name=name, detail=detail, limit_time=limit_time)
+        time.sleep(1)
+        return HttpResponse('OK')
 
 def task_edit(request):
     return render(request, 'wbl/task-edit.html')
