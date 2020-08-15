@@ -9,6 +9,7 @@ def index(request):
     dict = {}
     return render(request, 'wbl/index.html', dict)
 
+
 def profile(request):
     return render(request, 'wbl/profile.html')
 
@@ -18,13 +19,14 @@ def dashboard(request):
 
 
 def tasks(request):
-    dict ={}
+    dict = {}
     dict['tasks'] = Task.objects.all()
     return render(request, 'wbl/tasks.html', dict)
 
 
 def task_add(request):
     return render(request, 'wbl/task-add.html')
+
 
 def add_task(request):
     name = request.POST.get('name')
@@ -37,13 +39,35 @@ def add_task(request):
         time.sleep(1)
         return HttpResponse('OK')
 
-def task_edit(request):
-    return render(request, 'wbl/task-edit.html')
+
+def task_edit(request, id):
+    dict = {}
+    if Task.objects.filter(taskid=id).count() > 0:
+        dict['task'] = Task.objects.filter(taskid=id)[0]
+        return render(request, 'wbl/task-edit.html', dict)
+    else:
+        return render(request, 'wbl/404.html')
 
 
-def task_detail(request):
-    return render(request, 'wbl/task-detail.html')
+def task_detail(request, id):
+    dict = {}
+    id = id.replace('/', '')
+    dict['task'] = Task.objects.filter(taskid=id)[0]
+
+    return render(request, 'wbl/task-detail.html', dict)
 
 
 def peer_review(request):
     return render(request, 'wbl/peer-review.html')
+
+
+def evaluation_list(request):
+    dict = {}
+    dict['tasks'] = Task.objects.all()
+    return render(request, 'wbl/evaulation-list.html', dict)
+
+def evaluations(request):
+    return render(request, 'wbl/evaluations.html')
+
+def detailed_evaluation(request):
+    return render(request, 'wbl/detailed-evaluation.html')

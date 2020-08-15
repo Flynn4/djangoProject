@@ -3,8 +3,8 @@ from django.db import models
 
 # Create your models here.
 class Task(models.Model):
+    taskid = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    taskid = models.IntegerField(default=0)
     detail = models.TextField(default=" ")
     add_time = models.DateTimeField(auto_now_add=True)
     limit_time = models.DateTimeField()

@@ -240,54 +240,54 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{% url 'wbl:tasks' %}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Task List</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="{% url 'wbl:task_add' %}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Task Add</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{% url 'wbl:task_edit' %}" class="nav-link">
+                                <a href="{% url 'wbl:tasks' %}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Task Edit</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{% url 'wbl:task_detail' %}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Task Detail</p>
+                                    <p>Task List</p>
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Evaluations
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{% url 'wbl:peer_review' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Peer Review</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/advanced.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Test</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>
+                                Evaluations
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{% url 'wbl:evaluation_list' %}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Evaluation List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'wbl:peer_review' %}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Peer Review</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'wbl:evaluations' %}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Criterion</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'wbl:detailed_evaluation' %}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Detailed Evaluation</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon far fa-envelope"></i>
@@ -330,21 +330,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
         {% block header %}
         {% endblock %}
         <!-- Content Header (Page header) -->
-{#        <div class="content-header">#}
-{#            <div class="container-fluid">#}
-{#                <div class="row mb-2">#}
-{#                    <div class="col-sm-6">#}
-{#                        <h1 class="m-0 text-dark">Starter Page</h1>#}
-{#                    </div><!-- /.col -->#}
-{#                    <div class="col-sm-6">#}
-{#                        <ol class="breadcrumb float-sm-right">#}
-{#                            <li class="breadcrumb-item"><a href="#">Home</a></li>#}
-{#                            <li class="breadcrumb-item active">Starter Page</li>#}
-{#                        </ol>#}
-{#                    </div><!-- /.col -->#}
-{#                </div><!-- /.row -->#}
-{#            </div><!-- /.container-fluid -->#}
-{#        </div>#}
+        {#        <div class="content-header">#}
+        {#            <div class="container-fluid">#}
+        {#                <div class="row mb-2">#}
+        {#                    <div class="col-sm-6">#}
+        {#                        <h1 class="m-0 text-dark">Starter Page</h1>#}
+        {#                    </div><!-- /.col -->#}
+        {#                    <div class="col-sm-6">#}
+        {#                        <ol class="breadcrumb float-sm-right">#}
+        {#                            <li class="breadcrumb-item"><a href="#">Home</a></li>#}
+        {#                            <li class="breadcrumb-item active">Starter Page</li>#}
+        {#                        </ol>#}
+        {#                    </div><!-- /.col -->#}
+        {#                </div><!-- /.row -->#}
+        {#            </div><!-- /.container-fluid -->#}
+        {#        </div>#}
         <!-- /.content-header -->
 
         <!-- Main content -->
