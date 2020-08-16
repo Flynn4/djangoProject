@@ -37,7 +37,8 @@ def add_task(request):
     else:
         Task.objects.create(name=name, detail=detail, limit_time=limit_time)
         time.sleep(1)
-        return HttpResponse('OK')
+        id = Task.objects.filter(name=name).values('taskid')[0]['taskid']
+        return HttpResponse(id)
 
 
 def task_edit(request, id):
@@ -57,17 +58,32 @@ def task_detail(request, id):
     return render(request, 'wbl/task-detail.html', dict)
 
 
-def peer_review(request):
-    return render(request, 'wbl/peer-review.html')
-
 
 def evaluation_list(request):
     dict = {}
     dict['tasks'] = Task.objects.all()
     return render(request, 'wbl/evaulation-list.html', dict)
 
-def evaluations(request):
-    return render(request, 'wbl/evaluations.html')
+
+def evaluations(request, id):
+    dict = {}
+    dict['task'] = Task.objects.filter(taskid=id)[0]
+    return render(request, 'wbl/evaluations.html', dict)
+
+
+def peer_review(request, id):
+    return render(request, 'wbl/peer-review.html')
+
+
+def evaluation_mentor(request, id):
+    return render(request, 'wbl/evaluation-mentor.html')
+
+
+def academic_evaluation(request, id):
+    dict = {}
+    dict['task'] = Task.objects.filter(taskid=id)[0]
+    return render(request, 'wbl/academic-evaluation.html', dict)
+
 
 def detailed_evaluation(request):
     return render(request, 'wbl/detailed-evaluation.html')

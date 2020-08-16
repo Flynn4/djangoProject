@@ -16,12 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Evaluations</h1>
+                    <h1>Evaluations of <b>{{ task.name }}</b></h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Advanced Form</li>
+                        <li class="breadcrumb-item"><a href="{% url 'wbl:index' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Evaluations</li>
                     </ol>
                 </div>
             </div>
@@ -38,7 +38,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Evaluations</h3>
+                            <a class="btn btn-outline-danger btn-sm" href="#" onclick="javascript:history.back(-1)">
+                                <i class="fas fa-arrow-left">
+                                </i>
+                                Back
+                            </a>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-0">
@@ -56,7 +60,7 @@
                                     <td>1.</td>
                                     <td>Peer Review</td>
                                     <td>7/10</td>
-                                    <td><a class="btn btn-info btn-xs" href="{% url 'wbl:peer_review' %}">
+                                    <td><a class="btn btn-info btn-sm" href="{% url 'wbl:tasks' %}{{ task.taskid }}/peer-review">
                                         Show Details
                                     </a></td>
                                 </tr>
@@ -64,7 +68,7 @@
                                     <td>2.</td>
                                     <td>Evaluation by Mentor</td>
                                     <td>8/10</td>
-                                    <td><a class="btn btn-info btn-xs" href="">
+                                    <td><a class="btn btn-info btn-sm" href="{% url 'wbl:tasks' %}{{ task.taskid }}/evaluation-mentor">
                                 Show Details
                             </a></td>
                                 </tr>
@@ -72,7 +76,7 @@
                                     <td>3.</td>
                                     <td>Academic Evaluation</td>
                                     <td>9/10</td>
-                                    <td><a class="btn btn-info btn-xs" href="">
+                                    <td><a class="btn btn-info btn-sm" href="{% url 'wbl:tasks' %}{{ task.taskid }}/academic-evaluation">
                                 Show Details
                             </a></td>
                                 </tr>

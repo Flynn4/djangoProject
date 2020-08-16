@@ -229,8 +229,10 @@
                     },
                     success: function (data) {
                         console.log(data)
-                        if (data === 'OK') {
+                        value = data
+                        if (data > 0) {
                             toastr.success('Add Task Successful!')
+                            setTimeout('jump(value)', 1000)
                         } else {
                             toastr.error('Error! Please check the name and time!')
                             $('#createNewTask').removeAttr('disabled')
@@ -238,6 +240,10 @@
                     }
                 })
             }
+        }
+
+        function jump(id) {
+            location.href = '/tasks/' + id
         }
     </script>
 {% endblock %}
