@@ -37,14 +37,14 @@ def add_task(request):
     else:
         Task.objects.create(name=name, detail=detail, limit_time=limit_time)
         time.sleep(1)
-        id = Task.objects.filter(name=name).values('taskid')[0]['taskid']
+        id = Task.objects.filter(name=name).values('taskId')[0]['taskId']
         return HttpResponse(id)
 
 
 def task_edit(request, id):
     dict = {}
-    if Task.objects.filter(taskid=id).count() > 0:
-        dict['task'] = Task.objects.filter(taskid=id)[0]
+    if Task.objects.filter(taskId=id).count() > 0:
+        dict['task'] = Task.objects.filter(taskId=id)[0]
         return render(request, 'wbl/task-edit.html', dict)
     else:
         return render(request, 'wbl/404.html')
@@ -53,7 +53,7 @@ def task_edit(request, id):
 def task_detail(request, id):
     dict = {}
     id = id.replace('/', '')
-    dict['task'] = Task.objects.filter(taskid=id)[0]
+    dict['task'] = Task.objects.filter(taskId=id)[0]
 
     return render(request, 'wbl/task-detail.html', dict)
 
@@ -67,23 +67,30 @@ def evaluation_list(request):
 
 def evaluations(request, id):
     dict = {}
-    dict['task'] = Task.objects.filter(taskid=id)[0]
+    dict['task'] = Task.objects.filter(taskId=id)[0]
     return render(request, 'wbl/evaluations.html', dict)
 
 
 def peer_review(request, id):
-    return render(request, 'wbl/peer-review.html')
+    task = Task.objects.filter(taskId=id)[0]
+    return render(request, 'wbl/peer-review.html', {'task': task})
 
 
 def evaluation_mentor(request, id):
-    return render(request, 'wbl/evaluation-mentor.html')
+    task = Task.objects.filter(taskId=id)[0]
+    return render(request, 'wbl/evaluation-mentor.html', {'task': task})
 
 
 def academic_evaluation(request, id):
     dict = {}
-    dict['task'] = Task.objects.filter(taskid=id)[0]
+    dict['task'] = Task.objects.filter(taskId=id)[0]
     return render(request, 'wbl/academic-evaluation.html', dict)
 
 
-def detailed_evaluation(request):
-    return render(request, 'wbl/detailed-evaluation.html')
+def peer_review_detail(request, id):
+    task = Task.objects.filter(taskId=id)[0]
+    return render(request, 'wbl/peer-review-detail.html', {'task': task})
+
+
+def example_form(request):
+    return render(request, 'wbl/example-form.html')

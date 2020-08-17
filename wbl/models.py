@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Task(models.Model):
-    taskid = models.AutoField(primary_key=True)
+    taskId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     detail = models.TextField(default=" ")
     add_time = models.DateTimeField(auto_now_add=True)
@@ -15,6 +15,11 @@ class Task(models.Model):
 
     # def tags(self):
     #     return ','.join([i.name for i in self.game_type.all()])
+
+
+class Role(models.Model):
+    roleId = models.AutoField(primary_key=True)
+
 
 
 class Evaluation(models.Model):
