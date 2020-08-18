@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -17,9 +18,21 @@ class Task(models.Model):
     #     return ','.join([i.name for i in self.game_type.all()])
 
 
+class Criterion(models.Model):
+    criterionId = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
 class Role(models.Model):
     roleId = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    models.ManyToManyField(Criterion, blank=True)
 
+    def __str__(self):
+        return self.name
 
 
 class Evaluation(models.Model):
@@ -29,3 +42,8 @@ class Evaluation(models.Model):
 
     def __str__(self):
         return self.task.name
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, null=True, blank=True, default=None, on_delete=models.CASCADE)
