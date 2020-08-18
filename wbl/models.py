@@ -20,19 +20,27 @@ class Task(models.Model):
 
 class Criterion(models.Model):
     criterionId = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
+    detail = models.TextField(default=" ")
 
     def __str__(self):
-        return self.name
+        return str(self.criterionId)
 
 
 class Role(models.Model):
     roleId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    models.ManyToManyField(Criterion, blank=True)
+    models.ManyToManyField(Criterion, blank=True, through='Have')
 
     def __str__(self):
         return self.name
+
+
+class Have(models.Model):
+    criterion = models.ForeignKey(Criterion, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, null=True, blank=True, default=None, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'role_criterion'
 
 
 class Evaluation(models.Model):

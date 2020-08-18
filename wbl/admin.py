@@ -26,6 +26,21 @@ class RoleAdmin(admin.ModelAdmin):
 admin.site.register(Role, RoleAdmin)
 
 
+class CriterionAdmin(admin.ModelAdmin):
+    list_display = ['criterionId', 'detail']
+
+
+admin.site.register(Criterion, CriterionAdmin)
+
+
+
+class HaveAdmin(admin.ModelAdmin):
+    list_display = ['role', 'criterion']
+
+
+admin.site.register(Have, HaveAdmin)
+
+
 # Define an inline admin descriptor for Employee model
 # which acts a bit like a singleton
 class UserProfileInline(admin.StackedInline):
