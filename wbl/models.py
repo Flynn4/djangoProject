@@ -14,9 +14,6 @@ class Task(models.Model):
     def __str__(self):
         return self.name
 
-    # def tags(self):
-    #     return ','.join([i.name for i in self.game_type.all()])
-
 
 class Criterion(models.Model):
     criterionId = models.AutoField(primary_key=True)
@@ -25,14 +22,20 @@ class Criterion(models.Model):
     def __str__(self):
         return str(self.criterionId)
 
+    def associate_role(self):
+        return ','.join([i.name for i in self.role_set.all()])
+
 
 class Role(models.Model):
     roleId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    models.ManyToManyField(Criterion, blank=True, through='Have')
+    role_have = models.ManyToManyField(Criterion, blank=True, through='Have')
 
     def __str__(self):
         return self.name
+
+    def criterion(self):
+        return ','.join([str(i.criterionId) for i in self.role_have.all()])
 
 
 class Have(models.Model):

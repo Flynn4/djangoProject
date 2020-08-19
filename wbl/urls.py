@@ -19,5 +19,8 @@ urlpatterns = [
     re_path(r'^tasks/(\d+)/evaluation-mentor$', views.evaluation_mentor, name='evaluation_mentor'),
     re_path(r'^tasks/(\d+)/academic-evaluation$', views.academic_evaluation, name='academic_evaluation'),
     path('example-form/', views.example_form, name='example_form'),
+    path('choose-role/', views.choose_role, name='choose_role'),
+    path('get-choose-role/', views.get_choose_role, name='get_choose_role'),
+
 
 ]

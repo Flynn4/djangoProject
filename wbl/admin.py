@@ -20,14 +20,14 @@ admin.site.register(Evaluation, EvaluationAdmin)
 
 
 class RoleAdmin(admin.ModelAdmin):
-    list_display = ['roleId', 'name']
+    list_display = ['roleId', 'name', 'criterion']
 
 
 admin.site.register(Role, RoleAdmin)
 
 
 class CriterionAdmin(admin.ModelAdmin):
-    list_display = ['criterionId', 'detail']
+    list_display = ['criterionId', 'detail', 'associate_role']
 
 
 admin.site.register(Criterion, CriterionAdmin)

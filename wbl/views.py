@@ -94,3 +94,16 @@ def peer_review_detail(request, id):
 
 def example_form(request):
     return render(request, 'wbl/example-form.html')
+
+
+def choose_role(request):
+    roles = Role.objects.all()
+    return render(request, 'wbl/choose_role.html', {'roles': roles})
+
+
+def get_choose_role(request):
+    user = request.user
+    role_name = request.POST.get('role')
+    role = Role.objects.filter(name=role_name)[0]
+    UserProfile.objects.update(user=user, role=role)
+    return HttpResponse('OK')

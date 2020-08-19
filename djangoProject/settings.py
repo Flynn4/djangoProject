@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, use a different value.
 REGISTRATION_OPEN = True
 REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
-LOGIN_REDIRECT_URL = 'wbl:index'
+LOGIN_REDIRECT_URL = 'wbl:choose_role'
 LOGIN_URL = 'auth_login'
 
 MIDDLEWARE = [
