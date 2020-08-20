@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="{% static 'adminlte/dist/css/adminlte.min.css' %}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/toastr/toastr.min.css' %}">
 </head>
 <body class="hold-transition login-page">
 
@@ -27,13 +29,13 @@
             <!-- /.login-logo -->
             <div class="card">
                 <div class="card-body login-card-body">
-                    <form method="post" action="{% url 'wbl:get_choose_role' %}">
-                    {% csrf_token %}
+                    <form method="post" action=".">
+                        {% csrf_token %}
                         <div class="form-group">
                             <p class="login-box-msg">You still not choose your role!</p>
 
                             <label>Please choose your role</label>
-                            <select class="custom-select" name="role">
+                            <select class="custom-select" name="role" id="role">
                                 {% for role in roles %}
                                     <option>{{ role.name }}</option>
                                 {% endfor %}
@@ -51,7 +53,9 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-4">
-                                <button type="submit" class="btn btn-primary btn-block">Save</button>
+                                <button type="submit" class="btn btn-primary btn-block" id="saveRole" onclick="AjaxAddRole()
+">Save
+                                </button>
                             </div>
                             <!-- /.col -->
                         </div>
@@ -74,6 +78,37 @@
 <script src="{% static 'adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'adminlte/dist/js/adminlte.min.js' %}"></script>
+<!-- Toastr -->
+<script src="{% static 'adminlte/plugins/toastr/toastr.min.js' %}"></script>
+
+<script>
+    function AjaxAddRole() {
+        $('#saveRole').attr('disabled', 'disabled')
+        console.log($('#role').val())
+        $.ajax({
+            url: {% url 'wbl:get_choose_role' %},
+            type: 'POST',
+            data: {
+                'role': $('#role').val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (data) {
+                console.log(data)
+                if (data === 'OK') {
+                    toastr.success('Add Role Successful!')
+                    setTimeout('jump()', 1000)
+                } else {
+                    toastr.error('Something Wrong! Please Try Again!')
+                    $('#saveRole').removeAttr('disabled')
+                }
+            }
+        })
+    }
+
+    function jump() {
+        location.href = '/index/'
+    }
+</script>
 
 </body>
 </html>

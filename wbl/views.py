@@ -11,7 +11,12 @@ def index(request):
 
 
 def profile(request):
-    return render(request, 'wbl/profile.html')
+    user = request.user
+    role = UserProfile.objects.get(user=user).role
+    print(role)
+    criterions = role.role_have.all()
+    print(criterions)
+    return render(request, 'wbl/profile.html', {'criterions': criterions})
 
 
 def dashboard(request):
@@ -105,5 +110,9 @@ def get_choose_role(request):
     user = request.user
     role_name = request.POST.get('role')
     role = Role.objects.filter(name=role_name)[0]
-    UserProfile.objects.update(user=user, role=role)
-    return HttpResponse('OK')
+    u = UserProfile.objects.get(user=user)
+    u.role = role
+    u.save()
+    if u.role.name == role_name:
+        return HttpResponse('OK')
+    else: return HttpResponse('Error')

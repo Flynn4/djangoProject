@@ -27,18 +27,18 @@ admin.site.register(Role, RoleAdmin)
 
 
 class CriterionAdmin(admin.ModelAdmin):
-    list_display = ['criterionId', 'detail', 'associate_role']
+    list_display = ['criterionId', 'name', 'associate_role']
 
 
 admin.site.register(Criterion, CriterionAdmin)
 
 
 
-class HaveAdmin(admin.ModelAdmin):
-    list_display = ['role', 'criterion']
-
-
-admin.site.register(Have, HaveAdmin)
+# class HaveAdmin(admin.ModelAdmin):
+#     list_display = ['role', 'criterion']
+#
+#
+# admin.site.register(Have, HaveAdmin)
 
 
 # Define an inline admin descriptor for Employee model
