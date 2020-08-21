@@ -63,7 +63,6 @@ def task_detail(request, id):
     return render(request, 'wbl/task-detail.html', dict)
 
 
-
 def evaluation_list(request):
     dict = {}
     dict['tasks'] = Task.objects.all()
@@ -115,4 +114,5 @@ def get_choose_role(request):
     u.save()
     if u.role.name == role_name:
         return HttpResponse('OK')
-    else: return HttpResponse('Error')
+    else:
+        return HttpResponse('Error')

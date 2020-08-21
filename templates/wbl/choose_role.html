@@ -24,7 +24,7 @@
 <body class="hold-transition login-page">
 
 {% if user.is_authenticated %}
-    {% if user.userprofile.role is None %}
+    {% if user.userprofile.role.name == '' %}
         <div class="login-box">
             <!-- /.login-logo -->
             <div class="card">
