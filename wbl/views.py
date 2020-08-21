@@ -107,9 +107,13 @@ def choose_role(request):
 
 def get_choose_role(request):
     user = request.user
+    print(user)
     role_name = request.POST.get('role')
+    print(role_name)
     role = Role.objects.filter(name=role_name)[0]
-    u = UserProfile.objects.get(user=user)
+    print(role)
+    u = UserProfile.objects.get_or_create(user=user)[0]
+    print(u)
     u.role = role
     u.save()
     if u.role.name == role_name:

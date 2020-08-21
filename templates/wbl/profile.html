@@ -103,38 +103,125 @@
                 <!-- /.col -->
                 <div class="col-md-9">
                     <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">You are: <b>{{ user.userprofile.role.name }}</b></h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Criterion</th>
-                      <th>Progress</th>
-                      <th style="width: 40px">Label</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {% for criterion in criterions %}
-                    <tr>
-                      <td>{{ forloop.counter }}.</td>
-                      <td>{{ criterion.name }}</td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                        <div class="card-header">
+                            <h3 class="card-title">You are: <b>{{ user.userprofile.role.name }}</b></h3>
                         </div>
-                      </td>
-                      <td><span class="badge bg-danger">55%</span></td>
-                    </tr>
-                  {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Criterion</th>
+                                    <th>Details</th>
+                                    <th style="width: 10%">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for criterion in criterions %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}.</td>
+                                        <td>{{ criterion.name }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-default" data-toggle="modal"
+                                                    data-target="#modal-xl-detail-{{ forloop.counter }}">
+                                                Check Details
+                                            </button>
+                                            <div class="modal fade" id="modal-xl-detail-{{ forloop.counter }}">
+                                                <div class="modal-dialog modal-xl">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Criterion Detail</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>{{ criterion.detail }}</p>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+                                                            <p></p>
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-default" data-toggle="modal"
+                                                    data-target="#modal-xl-tasks-{{ forloop.counter }}">
+                                                <i class="fas fa-tasks">
+                                                </i> Tasks
+                                            </button>
+                                            <div class="modal fade" id="modal-xl-tasks-{{ forloop.counter }}">
+                                                <div class="modal-dialog modal-xl">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Tasks</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="card">
+
+                                                                <!-- /.card-header -->
+                                                                <div class="card-body p-0">
+                                                                    <table class="table table-striped">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th style="width: 10px">ID</th>
+                                                                            <th>Task Name</th>
+                                                                            <th>Progress</th>
+                                                                            <th style="width: 40px">Action</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        {% for task in  criterion.task_set.all %}
+                                                                        <tr>
+                                                                            <td>{{ task.taskId }}.</td>
+                                                                            <td>{{ task.name }}</td>
+                                                                            <td>
+                                                                                <div class="progress progress-xs">
+                                                                                    <div class="progress-bar progress-bar-danger"
+                                                                                         style="width: 55%"></div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td><span class="badge bg-danger">55%</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <!-- /.card-body -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+                                                            <p></p>
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
                     <!-- /.nav-tabs-custom -->
                 </div>
                 <!-- /.col -->

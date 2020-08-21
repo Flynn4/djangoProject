@@ -58,5 +58,5 @@ class Evaluation(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.ForeignKey(Role, default=None, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, null=True, blank=True, default=None, on_delete=models.CASCADE)

@@ -46,7 +46,7 @@
 {% block content %}
     <section class="content">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col">
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">General</h3>
@@ -58,41 +58,46 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            {% csrf_token %}
-                            <label for="inputName">Task Name</label>
-                            <input type="text" id="inputName" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputDescription">Task Description</label>
-                            <textarea id="inputDescription" class="form-control" rows="4"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputStatus">Status</label>
-                            <select class="form-control custom-select">
-                                <option selected disabled>Select one</option>
-                                <option>On Hold</option>
-                                <option>Canceled</option>
-                                <option>Success</option>
-                            </select>
-                        </div>
-                        <!-- Date -->
-                        <div class="form-group">
-                            <label>Limit Date:</label>
-                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input"
-                                       data-target="#reservationdate"/>
-                                <div class="input-group-append" data-target="#reservationdate"
-                                     data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {% csrf_token %}
+                                    <label for="inputName">Task Name</label>
+                                    <input type="text" id="inputName" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputDescription">Task Description</label>
+                                    <textarea id="inputDescription" class="form-control" rows="4"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputStatus">Status</label>
+                                    <select class="form-control custom-select">
+                                        <option selected disabled>Select one</option>
+                                        <option>On Hold</option>
+                                        <option>Canceled</option>
+                                        <option>Success</option>
+                                    </select>
+                                </div>
+                                <!-- Date -->
+                                <div class="form-group">
+                                    <label>Limit Date:</label>
+                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                               data-target="#reservationdate"/>
+                                        <div class="input-group-append" data-target="#reservationdate"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.form group -->
+                                <div class="form-group">
+                                    <label for="inputTaskLeader">Task Leader</label>
+                                    <input type="text" id="inputTaskLeader" class="form-control">
                                 </div>
                             </div>
                         </div>
-                        <!-- /.form group -->
-                        <div class="form-group">
-                            <label for="inputTaskLeader">Task Leader</label>
-                            <input type="text" id="inputTaskLeader" class="form-control">
-                        </div>
+
                     </div>
                     <!-- /.card-body -->
                 </div>
