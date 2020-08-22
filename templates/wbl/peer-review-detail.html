@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
     <link rel="stylesheet"
           href="{% static 'adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/toastr/toastr.min.css' %}">
 {% endblock %}
 
 {% block header %}
@@ -59,118 +61,86 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Finish the task?</td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio1">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio1">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio1">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio1">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio1">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio2">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio2">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio2">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio2">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio2">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio3">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio3">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio3">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio3">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio3">
-                                            <label class="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                </tr>
+                                {% for criterion in task.include_criterion.all %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ criterion.name }}&nbsp;&nbsp;
+                                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal"
+                                                    data-target="#modal-xl-detail-{{ forloop.counter }}">
+                                                Check Details
+                                            </button>
+                                            <div class="modal fade" id="modal-xl-detail-{{ forloop.counter }}">
+                                                <div class="modal-dialog modal-xl">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Criterion Detail</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>{{ criterion.detail }}</p>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+                                                            <p></p>
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" value="1"
+                                                       name="radio-{{ forloop.counter }}">
+                                                <label class="form-check-label"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" value="2"
+                                                       name="radio-{{ forloop.counter }}">
+                                                <label class="form-check-label"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" value="3"
+                                                       name="radio-{{ forloop.counter }}">
+                                                <label class="form-check-label"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" value="4"
+                                                       name="radio-{{ forloop.counter }}">
+                                                <label class="form-check-label"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" value="5"
+                                                       name="radio-{{ forloop.counter }}">
+                                                <label class="form-check-label"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                                 <tr>
                                     <td></td>
                                     <td>Result</td>
                                     <td>
                                     </td>
-                                    <td>Total: 50
+                                    <td>Total: <span id="totalMark">0</span>
                                     </td>
                                     <td>
                                     </td>
-                                    <td>Average: 8
+                                    <td>Average: <span id="averageMark">0</span>
                                     </td>
                                     <td>
                                     </td>
@@ -186,13 +156,13 @@
             </div>
             <!-- /.row -->
             <div class="row">
-            <div class="col-12">
-                <input id="createNewTask" type="submit" value="Save Changes"
-                       class="btn btn-success float-right"
-                       onclick="">
+                <div class="col-12">
+                    <input id="createNewTask" type="submit" value="Save Changes"
+                           class="btn btn-success float-right"
+                           onclick="AjaxSaveMark()">
 
+                </div>
             </div>
-        </div>
         </div>
         <!-- /.container-fluid -->
     </section>
@@ -224,6 +194,8 @@
     <script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+    <!-- Toastr -->
+    <script src="{% static 'adminlte/plugins/toastr/toastr.min.js' %}"></script>
     <!-- Page script -->
     <script>
         $(function () {
@@ -314,5 +286,66 @@
                 "responsive": true,
             });
         });
+    </script>
+    <script>
+        var num =
+        {{ task.include_criterion.all|length }}
+        var arr = new Array(num)
+
+        $(document).ready(function () {
+            for (var i = 0; i < num; i++) {
+                arr[i] = 0
+            }
+        });
+
+        $("input[type='radio']").on("change",
+            function (e) {
+                console.log($(e.target).val())
+                var i = e.target.name.replace(/[^0-9]/ig, "")
+                console.log(i)
+                arr[i - 1] = $(e.target).val()
+                console.log(arr)
+                $('#totalMark').text(sum(arr))
+                $('#averageMark').text(sum(arr)/num)
+            }
+        );
+
+
+        function sum(arr) {
+            var s = 0;
+            for (var i = 0; i < arr.length; i++) {
+                s += parseInt(arr[i]);
+            }
+            return s;
+        }
+
+
+        function AjaxSaveMark() {
+                $.ajax({
+                    url: {% url 'wbl:save_mark' %},
+                    type: 'POST',
+                    traditional: true,
+                    data: {
+                        'taskId': {{ task.taskId }},
+                        'totalMark': $('#totalMark').text(),
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        value = data
+                        if (data > 0) {
+                            toastr.success('Add Task Successful!')
+                            setTimeout('jump(value)', 1000)
+                        } else {
+                            toastr.error('Error! Please check the name and time!')
+                            $('#createNewTask').removeAttr('disabled')
+                        }
+                    }
+                });
+            }
+
+        function jump(id) {
+            location.href = '/tasks/' + id
+        }
     </script>
 {% endblock %}

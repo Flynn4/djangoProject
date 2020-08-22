@@ -49,7 +49,7 @@ class Role(models.Model):
 
 
 class Evaluation(models.Model):
-    task = models.ForeignKey(Task, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    task = models.OneToOneField(Task, null=True, blank=True, default=None, unique=True, on_delete=models.CASCADE)
     mark = models.IntegerField(default=0)
     comment = models.TextField(default=" ")
 
@@ -60,3 +60,7 @@ class Evaluation(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     role = models.ForeignKey(Role, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    isStudent = models.BooleanField(default=False)
+    isMentor = models.BooleanField(default=False)
+    isStaff = models.BooleanField(default=False)
+    test = models.TextField(default="  ")

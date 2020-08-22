@@ -37,10 +37,14 @@ def add_task(request):
     name = request.POST.get('name')
     detail = request.POST.get('detail')
     limit_time = request.POST.get('limit_time')
+    criterions = request.POST.getlist('criterion_checkbox')
+    print(criterions)
     if Task.objects.filter(name=name).count() == 1:
         return HttpResponse('Error')
     else:
-        Task.objects.create(name=name, detail=detail, limit_time=limit_time)
+        t = Task.objects.get_or_create(name=name, detail=detail, limit_time=limit_time)[0]
+        for c in criterions:
+            t.include_criterion.add(c)
         time.sleep(1)
         id = Task.objects.filter(name=name).values('taskId')[0]['taskId']
         return HttpResponse(id)
@@ -120,3 +124,14 @@ def get_choose_role(request):
         return HttpResponse('OK')
     else:
         return HttpResponse('Error')
+
+
+def save_mark(request):
+    taskId = request.POST.get('taskId')
+    mark = request.POST.get('totalMark')
+    print(taskId)
+    e = Evaluation.objects.get(task_id=taskId)
+    e.mark = mark
+    e.save()
+    print(e)
+    return HttpResponse('OK')

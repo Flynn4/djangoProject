@@ -57,11 +57,11 @@
                                 <i class="fas fa-minus"></i></button>
                         </div>
                     </div>
+                    {% csrf_token %}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    {% csrf_token %}
                                     <label for="inputName">Task Name</label>
                                     <input type="text" id="inputName" class="form-control">
                                 </div>
@@ -95,6 +95,36 @@
                                     <label for="inputTaskLeader">Task Leader</label>
                                     <input type="text" id="inputTaskLeader" class="form-control">
                                 </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <!-- /.card-header -->
+                                <div class="card-body p-0">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 10px">ID</th>
+                                            <th>Criterions</th>
+                                            <th style="width: 10%">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for criterion in user.userprofile.role.role_have.all %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}.</td>
+                                                <td>{{ criterion.name }}</td>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="{{ criterion.criterionId }}" id="criterion_checkbox">
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
                             </div>
                         </div>
 
@@ -211,6 +241,11 @@
     </script>
     <script>
         function AjaxTaskAdd() {
+            var checkID = []
+            $('#criterion_checkbox:checked').each(function(i){
+                      checkID[i] = $(this).val();
+                });
+            console.log(checkID)
             $('#createNewTask').attr('disabled', 'disabled')
             if ($('#reservationdate').find('input').val() === "") {
                 toastr.error('Error! Please enter the time!')
@@ -221,16 +256,21 @@
             } else if ($('#inputDescription').val() === "") {
                 toastr.error('Error! Please enter task detail!');
                 $('#createNewTask').removeAttr('disabled');
+            } else if (checkID.length == 0) {
+                toastr.error('Error! Please choose at least one Criterion!');
+                $('#createNewTask').removeAttr('disabled');
             } else {
                 console.log($('#reservationdate').find('input').val());
                 $.ajax({
                     url: {% url 'wbl:add_task' %},
                     type: 'POST',
+                    traditional: true,
                     data: {
                         'name': $('#inputName').val(),
                         'detail': $('#inputDescription').val(),
                         'limit_time': $('#reservationdate').find('input').val(),
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        'criterion_checkbox': checkID,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
                     },
                     success: function (data) {
                         console.log(data)
@@ -243,7 +283,7 @@
                             $('#createNewTask').removeAttr('disabled')
                         }
                     }
-                })
+                });
             }
         }
 
