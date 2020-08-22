@@ -1,3 +1,4 @@
+import json
 import time
 
 from django.shortcuts import render, HttpResponse
@@ -74,6 +75,8 @@ def evaluation_list(request):
 
 
 def evaluations(request, id):
+    e = Evaluation.objects.get_or_create(task_id=id)[0]
+    e.save()
     dict = {}
     dict['task'] = Task.objects.filter(taskId=id)[0]
     return render(request, 'wbl/evaluations.html', dict)
@@ -128,10 +131,18 @@ def get_choose_role(request):
 
 def save_mark(request):
     taskId = request.POST.get('taskId')
-    mark = request.POST.get('totalMark')
-    print(taskId)
+    totalMark = request.POST.get('totalMark')
+    criterionMark = json.loads(request.POST.getlist('criterionMark')[0])
     e = Evaluation.objects.get(task_id=taskId)
-    e.mark = mark
+    e.totalMark = totalMark
     e.save()
+
+    for c in criterionMark:
+        criterion = Criterion.objects.get(name=c['name'])
+        cm = CriterionMark.objects.get_or_create(evaluation=e, criterion=criterion)[0]
+        cm.mark = c['mark']
+        print(cm)
+        cm.save()
+
     print(e)
     return HttpResponse('OK')

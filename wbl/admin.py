@@ -13,7 +13,7 @@ admin.site.register(Task, TaskAdmin)
 
 
 class EvaluationAdmin(admin.ModelAdmin):
-    list_display = ['task', 'mark']
+    list_display = ['task', 'totalMark']
 
 
 admin.site.register(Evaluation, EvaluationAdmin)
@@ -34,11 +34,11 @@ admin.site.register(Criterion, CriterionAdmin)
 
 
 
-# class HaveAdmin(admin.ModelAdmin):
-#     list_display = ['role', 'criterion']
-#
-#
-# admin.site.register(Have, HaveAdmin)
+class CriterionMarkAdmin(admin.ModelAdmin):
+    list_display = ['evaluation', 'criterion', 'mark']
+
+
+admin.site.register(CriterionMark, CriterionMarkAdmin)
 
 
 # Define an inline admin descriptor for Employee model

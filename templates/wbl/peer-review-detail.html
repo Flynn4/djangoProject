@@ -64,7 +64,7 @@
                                 {% for criterion in task.include_criterion.all %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
-                                        <td>{{ criterion.name }}&nbsp;&nbsp;
+                                        <td><span id="criterion-{{ forloop.counter }}">{{ criterion.name }}</span>&nbsp;&nbsp;
                                             <button type="button" class="btn btn-info btn-xs" data-toggle="modal"
                                                     data-target="#modal-xl-detail-{{ forloop.counter }}">
                                                 Check Details
@@ -294,7 +294,8 @@
 
         $(document).ready(function () {
             for (var i = 0; i < num; i++) {
-                arr[i] = 0
+                var name = 'criterion-' + (i+1)
+                arr[i] = {'name': $('#' + name).text(), 'mark': 0}
             }
         });
 
@@ -303,7 +304,7 @@
                 console.log($(e.target).val())
                 var i = e.target.name.replace(/[^0-9]/ig, "")
                 console.log(i)
-                arr[i - 1] = $(e.target).val()
+                arr[i - 1].mark = $(e.target).val()
                 console.log(arr)
                 $('#totalMark').text(sum(arr))
                 $('#averageMark').text(sum(arr)/num)
@@ -314,7 +315,7 @@
         function sum(arr) {
             var s = 0;
             for (var i = 0; i < arr.length; i++) {
-                s += parseInt(arr[i]);
+                s += parseInt(arr[i].mark);
             }
             return s;
         }
@@ -327,6 +328,7 @@
                     traditional: true,
                     data: {
                         'taskId': {{ task.taskId }},
+                        'criterionMark': JSON.stringify(arr),
                         'totalMark': $('#totalMark').text(),
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
                     },

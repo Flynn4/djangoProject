@@ -50,11 +50,22 @@ class Role(models.Model):
 
 class Evaluation(models.Model):
     task = models.OneToOneField(Task, null=True, blank=True, default=None, unique=True, on_delete=models.CASCADE)
-    mark = models.IntegerField(default=0)
-    comment = models.TextField(default=" ")
+    totalMark = models.IntegerField(default=0)
+    finalComment = models.TextField(default=" ")
+    criterion_mark = models.ManyToManyField(Criterion, blank=True, through='CriterionMark')
 
     def __str__(self):
         return self.task.name
+
+
+class CriterionMark(models.Model):
+    evaluation = models.ForeignKey(Evaluation, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    criterion = models.ForeignKey(Criterion, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    mark = models.IntegerField(default=0)
+    comment = models.TextField(default=" ")
+
+    class Meta:
+        db_table = 'criterion_mark'
 
 
 class UserProfile(models.Model):
