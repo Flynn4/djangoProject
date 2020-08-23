@@ -61,10 +61,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for criterion in task.include_criterion.all %}
+                                {% for mark in marks %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
-                                        <td><span id="criterion-{{ forloop.counter }}">{{ criterion.name }}</span>&nbsp;&nbsp;
+                                        <td><span id="criterion-{{ forloop.counter }}">{{ mark.criterion }}</span>&nbsp;&nbsp;
                                             <button type="button" class="btn btn-info btn-xs" data-toggle="modal"
                                                     data-target="#modal-xl-detail-{{ forloop.counter }}">
                                                 Check Details
@@ -80,7 +80,7 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>{{ criterion.detail }}</p>
+                                                            <p>{{ mark.criterion.detail }}</p>
                                                         </div>
                                                         <div class="modal-footer justify-content-between">
                                                             <p></p>
@@ -94,41 +94,179 @@
                                                 <!-- /.modal-dialog -->
                                             </div>
                                         </td>
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" value="1"
-                                                       name="radio-{{ forloop.counter }}">
-                                                <label class="form-check-label"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" value="2"
-                                                       name="radio-{{ forloop.counter }}">
-                                                <label class="form-check-label"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" value="3"
-                                                       name="radio-{{ forloop.counter }}">
-                                                <label class="form-check-label"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" value="4"
-                                                       name="radio-{{ forloop.counter }}">
-                                                <label class="form-check-label"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" value="5"
-                                                       name="radio-{{ forloop.counter }}">
-                                                <label class="form-check-label"></label>
-                                            </div>
-                                        </td>
+                                        {% ifequal user.id rater.id %}
+                                            {% ifequal mark.mark 1 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="1"
+                                                               name="radio-{{ forloop.counter }}" checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="1"
+                                                               name="radio-{{ forloop.counter }}">
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 2 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="2"
+                                                               name="radio-{{ forloop.counter }}" checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="2"
+                                                               name="radio-{{ forloop.counter }}">
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 3 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="3"
+                                                               name="radio-{{ forloop.counter }}" checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="3"
+                                                               name="radio-{{ forloop.counter }}">
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 4 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="4"
+                                                               name="radio-{{ forloop.counter }}" checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="4"
+                                                               name="radio-{{ forloop.counter }}">
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 5 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="5"
+                                                               name="radio-{{ forloop.counter }}" checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="5"
+                                                               name="radio-{{ forloop.counter }}">
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                        {% else %}
+                                            {% ifequal mark.mark 1 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="1"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="1"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 2 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="2"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="2"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 3 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="3"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="3"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 4 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="4"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="4"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 5 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="5"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="5"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                        {% endifequal %}
                                     </tr>
                                 {% endfor %}
                                 <tr>
@@ -136,11 +274,11 @@
                                     <td>Result</td>
                                     <td>
                                     </td>
-                                    <td>Total: <span id="totalMark">0</span>
+                                    <td>Total: <span id="totalMark">{{ evaluation.totalMark }}</span>
                                     </td>
                                     <td>
                                     </td>
-                                    <td>Average: <span id="averageMark">0</span>
+                                    <td>Average: <span id="averageMark">{{ evaluation.averageMark }}</span>
                                     </td>
                                     <td>
                                     </td>
@@ -155,14 +293,16 @@
                 <!-- /.col -->
             </div>
             <!-- /.row -->
-            <div class="row">
-                <div class="col-12">
-                    <input id="createNewTask" type="submit" value="Save Changes"
-                           class="btn btn-success float-right"
-                           onclick="AjaxSaveMark()">
+            {% ifequal user.id rater.id %}
+                <div class="row">
+                    <div class="col-12">
+                        <input id="createNewTask" type="submit" value="Save Changes"
+                               class="btn btn-success float-right"
+                               onclick="AjaxSaveMark()">
 
+                    </div>
                 </div>
-            </div>
+            {% endifequal %}
         </div>
         <!-- /.container-fluid -->
     </section>
@@ -294,8 +434,10 @@
 
         $(document).ready(function () {
             for (var i = 0; i < num; i++) {
-                var name = 'criterion-' + (i+1)
-                arr[i] = {'name': $('#' + name).text(), 'mark': 0}
+                var name = 'criterion-' + (i + 1)
+                var radioName = 'radio-' + (i + 1)
+                console.log($("input[name="+radioName+"]:checked").val())
+                arr[i] = {'name': $('#' + name).text(), 'mark': $("input[name="+radioName+"]:checked").val()}
             }
         });
 
@@ -303,11 +445,13 @@
             function (e) {
                 console.log($(e.target).val())
                 var i = e.target.name.replace(/[^0-9]/ig, "")
-                console.log(i)
+                console.log('ID: ' + i)
                 arr[i - 1].mark = $(e.target).val()
                 console.log(arr)
                 $('#totalMark').text(sum(arr))
-                $('#averageMark').text(sum(arr)/num)
+                var avg = sum(arr) / num
+                avg = avg.toFixed(1)
+                $('#averageMark').text(avg)
             }
         );
 
@@ -322,32 +466,33 @@
 
 
         function AjaxSaveMark() {
-                $.ajax({
-                    url: {% url 'wbl:save_mark' %},
-                    type: 'POST',
-                    traditional: true,
-                    data: {
-                        'taskId': {{ task.taskId }},
-                        'criterionMark': JSON.stringify(arr),
-                        'totalMark': $('#totalMark').text(),
-                        'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    },
-                    success: function (data) {
-                        console.log(data)
-                        value = data
-                        if (data > 0) {
-                            toastr.success('Add Task Successful!')
-                            setTimeout('jump(value)', 1000)
-                        } else {
-                            toastr.error('Error! Please check the name and time!')
-                            $('#createNewTask').removeAttr('disabled')
-                        }
+            $.ajax({
+                url: {% url 'wbl:save_mark' %},
+                type: 'POST',
+                traditional: true,
+                data: {
+                    'taskId': {{ task.taskId }},
+                    'criterionMark': JSON.stringify(arr),
+                    'totalMark': $('#totalMark').text(),
+                    'averageMark': $('#averageMark').text(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    console.log(data)
+                    value = data
+                    if (data === 'OK') {
+                        toastr.success('Rate Successful!')
+                        setTimeout('jump(value)', 1000)
+                    } else {
+                        toastr.error('Error! Please contact the admin!')
+                        $('#createNewTask').removeAttr('disabled')
                     }
-                });
-            }
+                }
+            });
+        }
 
         function jump(id) {
-            location.href = '/tasks/' + id
+            location.reload();
         }
     </script>
 {% endblock %}

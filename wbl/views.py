@@ -75,7 +75,8 @@ def evaluation_list(request):
 
 
 def evaluations(request, id):
-    e = Evaluation.objects.get_or_create(task_id=id)[0]
+    user = request.user
+    e = Evaluation.objects.get_or_create(task_id=id, rater=user)[0]
     e.save()
     dict = {}
     dict['task'] = Task.objects.filter(taskId=id)[0]
@@ -84,7 +85,8 @@ def evaluations(request, id):
 
 def peer_review(request, id):
     task = Task.objects.filter(taskId=id)[0]
-    return render(request, 'wbl/peer-review.html', {'task': task})
+    evaluations = Evaluation.objects.filter(task=task)
+    return render(request, 'wbl/peer-review.html', {'task': task, 'evaluations': evaluations})
 
 
 def evaluation_mentor(request, id):
@@ -98,9 +100,14 @@ def academic_evaluation(request, id):
     return render(request, 'wbl/academic-evaluation.html', dict)
 
 
-def peer_review_detail(request, id):
-    task = Task.objects.filter(taskId=id)[0]
-    return render(request, 'wbl/peer-review-detail.html', {'task': task})
+def peer_review_detail(request, taskId, raterId):
+    raterId = raterId.replace('/', '')
+    task = Task.objects.filter(taskId=taskId)[0]
+    rater = User.objects.filter(id=raterId)[0]
+    marks = PeerReviewMark.objects.filter(evaluation__task=task, rater=rater)
+    evaluation = Evaluation.objects.filter(task=task, rater=rater)[0]
+    print(evaluation)
+    return render(request, 'wbl/peer-review-detail.html', {'task': task, 'rater': rater, 'marks':marks, 'evaluation': evaluation})
 
 
 def example_form(request):
@@ -130,16 +137,20 @@ def get_choose_role(request):
 
 
 def save_mark(request):
+    user = request.user
     taskId = request.POST.get('taskId')
     totalMark = request.POST.get('totalMark')
+    averageMark = request.POST.get('averageMark')
     criterionMark = json.loads(request.POST.getlist('criterionMark')[0])
-    e = Evaluation.objects.get(task_id=taskId)
+    e = Evaluation.objects.get(task_id=taskId, rater=user)
     e.totalMark = totalMark
+    e.averageMark = averageMark
+    e.rater = user
     e.save()
 
     for c in criterionMark:
         criterion = Criterion.objects.get(name=c['name'])
-        cm = CriterionMark.objects.get_or_create(evaluation=e, criterion=criterion)[0]
+        cm = PeerReviewMark.objects.get_or_create(evaluation=e, criterion=criterion, rater=user)[0]
         cm.mark = c['mark']
         print(cm)
         cm.save()

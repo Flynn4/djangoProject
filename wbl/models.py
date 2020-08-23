@@ -49,23 +49,25 @@ class Role(models.Model):
 
 
 class Evaluation(models.Model):
-    task = models.OneToOneField(Task, null=True, blank=True, default=None, unique=True, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    rater = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
     totalMark = models.IntegerField(default=0)
+    averageMark = models.FloatField(default=0)
     finalComment = models.TextField(default=" ")
-    criterion_mark = models.ManyToManyField(Criterion, blank=True, through='CriterionMark')
+    peer_review_mark = models.ManyToManyField(Criterion, blank=True, through='PeerReviewMark')
 
     def __str__(self):
         return self.task.name
 
 
-class CriterionMark(models.Model):
+class PeerReviewMark(models.Model):
     evaluation = models.ForeignKey(Evaluation, null=True, blank=True, default=None, on_delete=models.CASCADE)
     criterion = models.ForeignKey(Criterion, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    rater = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
     mark = models.IntegerField(default=0)
-    comment = models.TextField(default=" ")
 
     class Meta:
-        db_table = 'criterion_mark'
+        db_table = 'peer_review_mark'
 
 
 class UserProfile(models.Model):

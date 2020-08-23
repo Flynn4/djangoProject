@@ -56,35 +56,32 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>Student 1</td>
-                                    <td>80</td>
-                                    <td>8</td>
-                                    <td><a class="btn btn-info btn-xs" href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review-detail">
-                                        Show Details
-                                    </a></td>
-                                </tr>
-                                <tr>
-                                    <td>Student 2</td>
-                                    <td>90</td>
-                                    <td>9</td>
-                                    <td><a class="btn btn-info btn-xs" href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review-detail">
-                                        Show Details
-                                    </a></td>
-                                </tr>
-                                <tr>
-                                    <td>Student 3</td>
-                                    <td>95</td>
-                                    <td>9.5</td>
-                                    <td><a class="btn btn-info btn-xs" href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review-detail">
-                                        Show Details
-                                    </a></td>
-                                </tr>
+                                {% for evaluation in evaluations %}
+                                    <tr>
+                                        <td>Student {{ forloop.counter }}</td>
+                                        <td><span
+                                                id="evaluation-{{ forloop.counter }}">{{ evaluation.totalMark }}</span>
+                                        </td>
+                                        <td>{{ evaluation.averageMark }}</td>
+
+                                        {% ifequal user.id evaluation.rater_id %}
+                                        <td><a class="btn btn-warning btn-xs"
+                                               href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review-detail/{{ evaluation.rater_id }}">
+                                            Check your Rate
+                                        </a></td>
+                                            {% else %}
+                                                                                    <td><a class="btn btn-info btn-xs"
+                                               href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review-detail/{{ evaluation.rater_id }}">
+                                            Show Details
+                                        </a></td>
+                                    {% endifequal %}
+                                    </tr>
+                                {% endfor %}
                                 <tr>
                                     <td>Result</td>
-                                    <td>265</td>
-                                    <td>8.8</td>
-                                    <td> </td>
+                                    <td><span id="evaluationTotalMark">0</span></td>
+                                    <td><span id="evaluationAvgMark">0</span></td>
+                                    <td></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -218,4 +215,21 @@
             });
         });
     </script>
+    <script>
+        var num = {{ evaluations|length }}
+
+            $(document).ready(function () {
+                var sum = 0
+                var avg = 0
+                for (var i = 0; i < num; i++) {
+                    var name = 'evaluation-' + (i + 1)
+                    sum += parseInt($('#' + name).text())
+                    avg = sum/num
+                    console.log(sum)
+                    console.log(num)
+                    console.log(avg)
+                    $('#evaluationTotalMark').text(sum)
+                    $('#evaluationAvgMark').text(avg)
+                }
+            });</script>
 {% endblock %}
