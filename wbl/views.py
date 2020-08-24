@@ -104,10 +104,11 @@ def peer_review_detail(request, taskId, raterId):
     raterId = raterId.replace('/', '')
     task = Task.objects.filter(taskId=taskId)[0]
     rater = User.objects.filter(id=raterId)[0]
-    marks = PeerReviewMark.objects.filter(evaluation__task=task, rater=rater)
     evaluation = Evaluation.objects.filter(task=task, rater=rater)[0]
-    print(evaluation)
-    return render(request, 'wbl/peer-review-detail.html', {'task': task, 'rater': rater, 'marks':marks, 'evaluation': evaluation})
+    for criterion in task.include_criterion.all():
+        prm = PeerReviewMark.objects.get_or_create(evaluation=evaluation, rater=rater, criterion=criterion)
+    marks = PeerReviewMark.objects.filter(evaluation=evaluation, rater=rater)
+    return render(request, 'wbl/peer-review-detail.html', {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
 
 
 def example_form(request):
