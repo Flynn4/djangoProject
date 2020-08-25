@@ -78,9 +78,8 @@ def evaluations(request, id):
     user = request.user
     e = Evaluation.objects.get_or_create(task_id=id, rater=user)[0]
     e.save()
-    dict = {}
-    dict['task'] = Task.objects.filter(taskId=id)[0]
-    return render(request, 'wbl/evaluations.html', dict)
+    task = Task.objects.filter(taskId=id)[0]
+    return render(request, 'wbl/evaluations.html', {'task': task, 'evaluation': e})
 
 
 def peer_review(request, id):
