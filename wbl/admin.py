@@ -40,6 +40,27 @@ class PeerReviewMarkAdmin(admin.ModelAdmin):
 admin.site.register(PeerReviewMark, PeerReviewMarkAdmin)
 
 
+class MentorMarkAdmin(admin.ModelAdmin):
+    list_display = ['evaluation', 'rater', 'criterion', 'mark']
+
+
+admin.site.register(MentorMark, MentorMarkAdmin)
+
+
+class AcademicMarkAdmin(admin.ModelAdmin):
+    list_display = ['evaluation', 'rater', 'criterion', 'mark']
+
+
+admin.site.register(AcademicMark, AcademicMarkAdmin)
+
+
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ['teamId', 'name', 'team_member']
+
+
+admin.site.register(Team, TeamAdmin)
+
+
 # Define an inline admin descriptor for Employee model
 # which acts a bit like a singleton
 class UserProfileInline(admin.StackedInline):

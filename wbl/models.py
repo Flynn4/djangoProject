@@ -54,7 +54,10 @@ class Evaluation(models.Model):
     totalMark = models.IntegerField(default=0)
     averageMark = models.FloatField(default=0)
     finalComment = models.TextField(default=" ")
-    peer_review_mark = models.ManyToManyField(Criterion, blank=True, through='PeerReviewMark')
+    peer_review_mark = models.ManyToManyField(Criterion, blank=True, through='PeerReviewMark',
+                                              related_name='peer_review_mark')
+    mentor_mark = models.ManyToManyField(Criterion, blank=True, through='MentorMark', related_name='mentor_mark')
+    academic_mark = models.ManyToManyField(Criterion, blank=True, through='AcademicMark', related_name='academic_mark')
 
     def __str__(self):
         return self.task.name
@@ -70,6 +73,35 @@ class PeerReviewMark(models.Model):
         db_table = 'peer_review_mark'
 
 
+class MentorMark(models.Model):
+    evaluation = models.ForeignKey(Evaluation, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    criterion = models.ForeignKey(Criterion, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    rater = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    mark = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'mentor_mark'
+
+
+class AcademicMark(models.Model):
+    evaluation = models.ForeignKey(Evaluation, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    criterion = models.ForeignKey(Criterion, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    rater = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    mark = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'academic_mark'
+
+
+class Team(models.Model):
+    teamId = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    member = models.ManyToManyField(User, blank=True)
+
+    def team_member(self):
+        return ','.join([i.username for i in self.member.all()])
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     role = models.ForeignKey(Role, null=True, blank=True, default=None, on_delete=models.CASCADE)
@@ -77,3 +109,4 @@ class UserProfile(models.Model):
     isMentor = models.BooleanField(default=False)
     isStaff = models.BooleanField(default=False)
     test = models.TextField(default="  ")
+    team = models.ForeignKey(Team, null=True, blank=True, default=None, on_delete=models.CASCADE)
