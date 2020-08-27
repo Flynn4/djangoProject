@@ -274,7 +274,7 @@
                                     <td>Result</td>
                                     <td>
                                     </td>
-                                    <td>Total: <span id="totalMark">{{ evaluation.totalMark }}</span>
+                                    <td>Total: <span id="peerReviewMark">{{ evaluation.peerReviewMark }}</span>
                                     </td>
                                     <td>
                                     </td>
@@ -448,7 +448,7 @@
                 console.log('ID: ' + i)
                 arr[i - 1].mark = $(e.target).val()
                 console.log(arr)
-                $('#totalMark').text(sum(arr))
+                $('#peerReviewMark').text(sum(arr))
                 var avg = sum(arr) / num
                 avg = avg.toFixed(1)
                 $('#averageMark').text(avg)
@@ -473,7 +473,7 @@
                 data: {
                     'taskId': {{ task.taskId }},
                     'criterionMark': JSON.stringify(arr),
-                    'totalMark': $('#totalMark').text(),
+                    'peerReviewMark': $('#peerReviewMark').text(),
                     'averageMark': $('#averageMark').text(),
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
                 },

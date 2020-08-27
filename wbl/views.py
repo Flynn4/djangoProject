@@ -35,6 +35,7 @@ def task_add(request):
 
 
 def add_task(request):
+    user = request.user
     name = request.POST.get('name')
     detail = request.POST.get('detail')
     limit_time = request.POST.get('limit_time')
@@ -43,7 +44,7 @@ def add_task(request):
     if Task.objects.filter(name=name).count() == 1:
         return HttpResponse('Error')
     else:
-        t = Task.objects.get_or_create(name=name, detail=detail, limit_time=limit_time)[0]
+        t = Task.objects.get_or_create(name=name, detail=detail, limit_time=limit_time, mentor=user)[0]
         for c in criterions:
             t.include_criterion.add(c)
         time.sleep(1)
@@ -88,9 +89,15 @@ def peer_review(request, id):
     return render(request, 'wbl/peer-review.html', {'task': task, 'evaluations': evaluations})
 
 
-def evaluation_mentor(request, id):
-    task = Task.objects.filter(taskId=id)[0]
-    return render(request, 'wbl/evaluation-mentor.html', {'task': task})
+def mentor_review_detail(request, taskId):
+    task = Task.objects.filter(taskId=taskId)[0]
+    rater = task.mentor
+    evaluation = Evaluation.objects.filter(task=task, rater=rater)[0]
+    for criterion in task.include_criterion.all():
+        mm = MentorMark.objects.get_or_create(evaluation=evaluation, rater=rater, criterion=criterion)
+    marks = MentorMark.objects.filter(evaluation=evaluation, rater=rater)
+    return render(request, 'wbl/mentor-review-detail.html',
+                  {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
 
 
 def academic_evaluation(request, id):
@@ -107,7 +114,8 @@ def peer_review_detail(request, taskId, raterId):
     for criterion in task.include_criterion.all():
         prm = PeerReviewMark.objects.get_or_create(evaluation=evaluation, rater=rater, criterion=criterion)
     marks = PeerReviewMark.objects.filter(evaluation=evaluation, rater=rater)
-    return render(request, 'wbl/peer-review-detail.html', {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
+    return render(request, 'wbl/peer-review-detail.html',
+                  {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
 
 
 def example_form(request):
@@ -139,18 +147,31 @@ def get_choose_role(request):
 def save_mark(request):
     user = request.user
     taskId = request.POST.get('taskId')
-    totalMark = request.POST.get('totalMark')
     averageMark = request.POST.get('averageMark')
+    peerReviewMark = request.POST.get('peerReviewMark')
+    mentorReviewMark = request.POST.get('mentorReviewMark')
+    academicReviewMark = request.POST.get('academicReviewMark')
     criterionMark = json.loads(request.POST.getlist('criterionMark')[0])
     e = Evaluation.objects.get(task_id=taskId, rater=user)
-    e.totalMark = totalMark
-    e.averageMark = averageMark
+    if peerReviewMark is not None:
+        e.peerReviewMark = peerReviewMark
+    elif mentorReviewMark is not None:
+        e.mentorReviewMark = mentorReviewMark
+    elif academicReviewMark is None:
+        e.academicReviewMark = academicReviewMark
+    e.totalMark = int(e.peerReviewMark) + int(e.mentorReviewMark) + int(e.academicReviewMark)
+    e.averageMark = round(e.totalMark / 3, 1)
     e.rater = user
     e.save()
 
     for c in criterionMark:
         criterion = Criterion.objects.get(name=c['name'])
-        cm = PeerReviewMark.objects.get_or_create(evaluation=e, criterion=criterion, rater=user)[0]
+        if peerReviewMark is not None:
+            cm = PeerReviewMark.objects.get_or_create(evaluation=e, criterion=criterion, rater=user)[0]
+        elif mentorReviewMark is not None:
+            cm = MentorMark.objects.get_or_create(evaluation=e, criterion=criterion, rater=user)[0]
+        elif academicReviewMark is not None:
+            cm = AcademicMark.objects.get_or_create(evaluation=e, criterion=criterion, rater=user)[0]
         cm.mark = c['mark']
         print(cm)
         cm.save()

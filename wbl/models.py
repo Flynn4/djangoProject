@@ -23,6 +23,7 @@ class Task(models.Model):
     limit_time = models.DateTimeField()
     progress = models.IntegerField(default=0)
     include_criterion = models.ManyToManyField(Criterion, blank=True)
+    mentor = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -51,6 +52,9 @@ class Role(models.Model):
 class Evaluation(models.Model):
     task = models.ForeignKey(Task, null=True, blank=True, default=None, on_delete=models.CASCADE)
     rater = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    peerReviewMark = models.IntegerField(default=0)
+    mentorReviewMark = models.IntegerField(default=0)
+    academicReviewMark = models.IntegerField(default=0)
     totalMark = models.IntegerField(default=0)
     averageMark = models.FloatField(default=0)
     finalComment = models.TextField(default=" ")
@@ -76,7 +80,7 @@ class PeerReviewMark(models.Model):
 class MentorMark(models.Model):
     evaluation = models.ForeignKey(Evaluation, null=True, blank=True, default=None, on_delete=models.CASCADE)
     criterion = models.ForeignKey(Criterion, null=True, blank=True, default=None, on_delete=models.CASCADE)
-    rater = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    rater = models.ForeignKey(User, editable=False, null=True, blank=True, default=None, on_delete=models.CASCADE)
     mark = models.IntegerField(default=0)
 
     class Meta:
