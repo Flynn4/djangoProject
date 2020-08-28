@@ -10,6 +10,8 @@
           href="{% static 'adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{% static 'adminlte/plugins/toastr/toastr.min.css' %}">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/summernote/summernote-bs4.css' %}">
 {% endblock %}
 
 {% block header %}
@@ -18,7 +20,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Peer Review: <b>{{ task.name }}</b></h1>
+                    <h1>Evaluation by Mentor: <b>{{ task.name }}</b></h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -274,7 +276,7 @@
                                     <td>Result</td>
                                     <td>
                                     </td>
-                                    <td>Total: <span id="peerReviewMark">{{ evaluation.peerReviewMark }}</span>
+                                    <td>Total: <span id="academicReviewMark">{{ evaluation.academicReviewMark }}</span>
                                     </td>
                                     <td>
                                     </td>
@@ -291,6 +293,87 @@
                     <!-- /.card -->
                 </div>
                 <!-- /.col -->
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h4>Comments</h4>
+                    <div class="post">
+                        <div class="user-block">
+                            <img class="img-circle img-bordered-sm"
+                                 src="{% static 'adminlte/dist/img/user1-128x128.jpg' %}" alt="user image">
+                            <span class="username">
+                          <a href="#">Jonathan Burke Jr.</a>
+                        </span>
+                            <span class="description">Shared publicly - 7:45 PM today</span>
+                        </div>
+                        <!-- /.user-block -->
+                        <p>
+                            Very Good!
+                        </p>
+                    </div>
+
+                    <div class="post clearfix">
+                        <div class="user-block">
+                            <img class="img-circle img-bordered-sm"
+                                 src="{% static 'adminlte/dist/img/user7-128x128.jpg' %}" alt="User Image">
+                            <span class="username">
+                          <a href="#">Sarah Ross</a>
+                        </span>
+                            <span class="description">Sent you a message - 3 days ago</span>
+                        </div>
+                        <!-- /.user-block -->
+                        <p>
+                            Well done!
+                        </p>
+                    </div>
+
+                    <div class="post">
+                        <div class="user-block">
+                            <img class="img-circle img-bordered-sm"
+                                 src="{% static 'adminlte/dist/img/user1-128x128.jpg' %}" alt="user image">
+                            <span class="username">
+                          <a href="#">Jonathan Burke Jr.</a>
+                        </span>
+                            <span class="description">Shared publicly - 5 days ago</span>
+                        </div>
+                        <!-- /.user-block -->
+                        <p>
+                            Not bad!
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Bootstrap WYSIHTML5
+                        <small>Simple and fast</small>
+                    </h3>
+                    <!-- tools box -->
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse"
+                                data-toggle="tooltip"
+                                title="Collapse">
+                            <i class="fas fa-minus"></i></button>
+                        <button type="button" class="btn btn-tool btn-sm" data-card-widget="remove"
+                                data-toggle="tooltip"
+                                title="Remove">
+                            <i class="fas fa-times"></i></button>
+                    </div>
+                    <!-- /. tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body pad">
+                    <div class="mb-3">
+                <textarea class="textarea" placeholder="Place some text here"
+                          style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                    </div>
+                    <p class="text-sm mb-0">
+                        Editor <a href="https://github.com/summernote/summernote">Documentation and license
+                        information.</a>
+                    </p>
+                </div>
             </div>
             <!-- /.row -->
             {% ifequal user.id rater.id %}
@@ -337,6 +420,14 @@
     <!-- Toastr -->
     <script src="{% static 'adminlte/plugins/toastr/toastr.min.js' %}"></script>
     <!-- Page script -->
+    <!-- Summernote -->
+    <script src="{% static 'adminlte/plugins/summernote/summernote-bs4.min.js' %}"></script>
+    <script>
+        $(function () {
+            // Summernote
+            $('.textarea').summernote()
+        })
+    </script>
     <script>
         $(function () {
             //Initialize Select2 Elements
@@ -436,8 +527,8 @@
             for (var i = 0; i < num; i++) {
                 var name = 'criterion-' + (i + 1)
                 var radioName = 'radio-' + (i + 1)
-                console.log($("input[name="+radioName+"]:checked").val())
-                arr[i] = {'name': $('#' + name).text(), 'mark': $("input[name="+radioName+"]:checked").val()}
+                console.log($("input[name=" + radioName + "]:checked").val())
+                arr[i] = {'name': $('#' + name).text(), 'mark': $("input[name=" + radioName + "]:checked").val()}
             }
         });
 
@@ -448,7 +539,7 @@
                 console.log('ID: ' + i)
                 arr[i - 1].mark = $(e.target).val()
                 console.log(arr)
-                $('#peerReviewMark').text(sum(arr))
+                $('#academicReviewMark').text(sum(arr))
                 var avg = sum(arr) / num
                 avg = avg.toFixed(1)
                 $('#averageMark').text(avg)
@@ -473,7 +564,7 @@
                 data: {
                     'taskId': {{ task.taskId }},
                     'criterionMark': JSON.stringify(arr),
-                    'peerReviewMark': $('#peerReviewMark').text(),
+                    'academicReviewMark': $('#academicReviewMark').text(),
                     'averageMark': $('#averageMark').text(),
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
                 },

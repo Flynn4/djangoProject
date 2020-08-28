@@ -23,6 +23,7 @@ class Task(models.Model):
     limit_time = models.DateTimeField()
     progress = models.IntegerField(default=0)
     include_criterion = models.ManyToManyField(Criterion, blank=True)
+    students = models.ManyToManyField(User, blank=True, related_name='students')
     mentor = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
 
     def __str__(self):

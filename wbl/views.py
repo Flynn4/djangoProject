@@ -100,10 +100,15 @@ def mentor_review_detail(request, taskId):
                   {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
 
 
-def academic_evaluation(request, id):
-    dict = {}
-    dict['task'] = Task.objects.filter(taskId=id)[0]
-    return render(request, 'wbl/academic-evaluation.html', dict)
+def academic_review_detail(request, taskId):
+    task = Task.objects.filter(taskId=taskId)[0]
+    rater = task.mentor
+    evaluation = Evaluation.objects.filter(task=task, rater=rater)[0]
+    for criterion in task.include_criterion.all():
+        am = AcademicMark.objects.get_or_create(evaluation=evaluation, rater=rater, criterion=criterion)
+    marks = AcademicMark.objects.filter(evaluation=evaluation, rater=rater)
+    return render(request, 'wbl/academic-review-detail.html',
+                  {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
 
 
 def peer_review_detail(request, taskId, raterId):
@@ -157,7 +162,7 @@ def save_mark(request):
         e.peerReviewMark = peerReviewMark
     elif mentorReviewMark is not None:
         e.mentorReviewMark = mentorReviewMark
-    elif academicReviewMark is None:
+    elif academicReviewMark is not None:
         e.academicReviewMark = academicReviewMark
     e.totalMark = int(e.peerReviewMark) + int(e.mentorReviewMark) + int(e.academicReviewMark)
     e.averageMark = round(e.totalMark / 3, 1)

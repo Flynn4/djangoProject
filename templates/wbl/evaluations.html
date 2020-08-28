@@ -59,7 +59,7 @@
                                 <tr>
                                     <td>1.</td>
                                     <td>Peer Review</td>
-                                    <td>{{ evaluation.totalMark }}</td>
+                                    <td>{{ evaluation.peerReviewMark }}</td>
                                     <td><a class="btn btn-info btn-sm" href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review">
                                         Show Details
                                     </a></td>
@@ -67,7 +67,7 @@
                                 <tr>
                                     <td>2.</td>
                                     <td>Evaluation by Mentor</td>
-                                    <td>8/10</td>
+                                    <td>{{ evaluation.mentorReviewMark }}</td>
                                     <td><a class="btn btn-info btn-sm" href="{% url 'wbl:tasks' %}{{ task.taskId }}/mentor-review-detail">
                                 Show Details
                             </a></td>
@@ -75,15 +75,15 @@
                                 <tr>
                                     <td>3.</td>
                                     <td>Academic Evaluation</td>
-                                    <td>9/10</td>
-                                    <td><a class="btn btn-info btn-sm" href="{% url 'wbl:tasks' %}{{ task.taskId }}/academic-evaluation">
+                                    <td>{{ evaluation.academicReviewMark }}</td>
+                                    <td><a class="btn btn-info btn-sm" href="{% url 'wbl:tasks' %}{{ task.taskId }}/academic-review-detail">
                                 Show Details
                             </a></td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>Average Rating</td>
-                                    <td>7/10</td>
+                                    <td>Total Ratings</td>
+                                    <td>{{ evaluation.totalMark }}</td>
                                     <td> </td>
                                 </tr>
                                 </tbody>

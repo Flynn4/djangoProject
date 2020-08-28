@@ -51,7 +51,7 @@
                                 <tr>
                                     <th style="width: 30%">Reviewer</th>
                                     <th>Total Ratings</th>
-                                    <th>Average Ratings</th>
+{#                                    <th>Average Ratings</th>#}
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -60,9 +60,9 @@
                                     <tr>
                                         <td>Student {{ forloop.counter }}</td>
                                         <td><span
-                                                id="evaluation-{{ forloop.counter }}">{{ evaluation.totalMark }}</span>
+                                                id="evaluation-{{ forloop.counter }}">{{ evaluation.peerReviewMark }}</span>
                                         </td>
-                                        <td>{{ evaluation.averageMark }}</td>
+{#                                        <td>{{ evaluation.averageMark }}</td>#}
 
                                         {% ifequal user.id evaluation.rater_id %}
                                         <td><a class="btn btn-warning btn-xs"
@@ -80,7 +80,7 @@
                                 <tr>
                                     <td>Result</td>
                                     <td><span id="evaluationTotalMark">0</span></td>
-                                    <td><span id="evaluationAvgMark">0</span></td>
+{#                                    <td><span id="evaluationAvgMark">0</span></td>#}
                                     <td></td>
                                 </tr>
                                 </tbody>

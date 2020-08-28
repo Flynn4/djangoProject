@@ -52,7 +52,7 @@
                                 </li>
                             </ul>
 
-{#                            <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>#}
+                            {#                            <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>#}
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -182,16 +182,46 @@
                                                                         <tr>
                                                                             <th style="width: 10px">ID</th>
                                                                             <th>Task Name</th>
+                                                                            <th>Peer Review Mark</th>
+                                                                            <th>Mentor Mark</th>
+                                                                            <th>Academic Mark</th>
+                                                                            <th>Total Competency Credits:</th>
                                                                             <th style="width: 10%">Action</th>
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                        {% for task in  criterion.task_set.all %}
+                                                                        {% for task in criterion.task_set.all %}
                                                                             <tr>
                                                                                 <td>{{ task.taskId }}.</td>
                                                                                 <td>{{ task.name }}</td>
+                                                                                <td id="prmMark-{{ forloop.counter }}">
+                                                                                    {% for prm in task.evaluation_set.all.0.peerreviewmark_set.all %}
+                                                                                        {% if prm.criterion == criterion %}
+                                                                                            {{ prm.mark }}
+                                                                                        {% endif %}
+                                                                                    {% endfor %}</td>
+                                                                                <td id="mmMark-{{ forloop.counter }}">
+                                                                                    {% for mm in task.evaluation_set.all.0.mentormark_set.all %}
+                                                                                        {% if mm.criterion == criterion %}
+                                                                                            <span>{{ mm.mark }}</span>
+                                                                                        {% endif %}
+                                                                                    {% endfor %}</td>
+                                                                                <td id="amMark-{{ forloop.counter }}">
+                                                                                    {% for am in task.evaluation_set.all.0.academicmark_set.all %}
+                                                                                        {% if am.criterion == criterion %}
+                                                                                            <span>{{ am.mark }}</span>
+                                                                                        {% endif %}
+                                                                                    {% endfor %}</td>
+                                                                                <td><span id="totalMark-{{ forloop.counter }}" style="color: red"></span>
+                                                                                </td>
                                                                                 <td><a class="btn btn-primary btn-sm"
                                                                                        href="
+
+
+
+
+
+
 
 
 
@@ -236,6 +266,45 @@
             <!-- /.row -->
         </div><!-- /.container-fluid -->
     </section>
+{% endblock %}
+{% block script %}
+    <script>
+        var num =
+        {{ criterions|length }}
+        var arr = new Array(num)
+
+        $(document).ready(function () {
+            for (var j = 0; j < num; j++) {
+                var modal = 'modal-xl-tasks-' + (j +1)
+                for (var i = 0; i < 3; i++) {
+                    var prmMark = 'prmMark-' + (i + 1);
+                    var mmMark = 'mmMark-' + (i + 1);
+                    var amMark = 'amMark-' + (i + 1);
+                    var totalMark = 'totalMark-' + (i + 1);
+                    var prm = parseInt($('#' + modal).find("td[id=" + prmMark + "]").text());
+                    {#console.log(prm)#}
+                    var mm = parseInt($('#' + modal).find("td[id=" + mmMark + "]").text());
+                    {#console.log(mm)#}
+                    var am = parseInt($('#' + modal).find("td[id=" + amMark + "]").text());
+                    {#console.log(am)#}
+                    var sum = prm + mm + am
+                    {#console.log(total)#}
+                    if (!isNaN(sum)) {
+                        $('#' + modal).find("span[id=" + totalMark + "]").text(sum);
+                    }
+                }
+            }
+
+        });
+
+        function sum(arr) {
+            var s = 0;
+            for (var i = 0; i < arr.length; i++) {
+                s += parseInt(arr[i].mark);
+            }
+            return s;
+        }
+    </script>
 {% endblock %}
 <!-- /.content -->
 
