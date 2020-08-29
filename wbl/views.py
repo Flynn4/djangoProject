@@ -14,9 +14,13 @@ def index(request):
 def profile(request):
     user = request.user
     role = UserProfile.objects.get(user=user).role
-    print(role)
     criterions = role.role_have.all()
-    print(criterions)
+
+    # for criterion in criterions:
+    #     prm = PeerReviewMark.objects.filter()
+    #     for task in user.task_set.all():
+    #         print(task.taskId)
+
     return render(request, 'wbl/profile.html', {'criterions': criterions})
 
 
@@ -25,9 +29,9 @@ def dashboard(request):
 
 
 def tasks(request):
-    dict = {}
-    dict['tasks'] = Task.objects.all()
-    return render(request, 'wbl/tasks.html', dict)
+    user = request.user
+    tasks = Task.objects.filter(students__exact=user)
+    return render(request, 'wbl/tasks.html', {'tasks': tasks})
 
 
 def task_add(request):
@@ -67,6 +71,14 @@ def task_detail(request, id):
     dict['task'] = Task.objects.filter(taskId=id)[0]
 
     return render(request, 'wbl/task-detail.html', dict)
+
+
+def finish_task(request):
+    taskId = request.POST.get('taskId')
+    task = Task.objects.get(taskId=taskId)
+    task.isFinish = True
+    task.save()
+    return HttpResponse('OK')
 
 
 def evaluation_list(request):

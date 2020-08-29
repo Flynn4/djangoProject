@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load web_template_tags %}
 {% load static %}
 <!DOCTYPE html>
 
@@ -53,9 +54,6 @@
                         <th style="width: 30%">
                             Team Members
                         </th>
-                        <th>
-                            Task Progress
-                        </th>
                         <th style="width: 8%" class="text-center">
                             Status
                         </th>
@@ -80,36 +78,23 @@
                             </td>
                             <td>
                                 <ul class="list-inline">
+                                    {% for student in task.students.all %}
                                     <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar"
-                                             src="{% static 'adminlte/dist/img/avatar.png' %}">
+                                    {% ifequal user student %}
+                                        <span class="badge badge-dark">{{ student.username }}</span>
+                                        {% else %}
+                                        <span class="badge badge-light">{{ student.username }}</span>
+                                    {% endifequal %}
                                     </li>
-                                    <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar"
-                                             src="{% static 'adminlte/dist/img/avatar2.png' %}">
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar"
-                                             src="{% static 'adminlte/dist/img/avatar3.png' %}">
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar"
-                                             src="{% static 'adminlte/dist/img/avatar04.png' %}">
-                                    </li>
+                                        {% endfor %}
                                 </ul>
                             </td>
-                            <td class="project_progress">
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-green" role="progressbar" aria-volumenow="57"
-                                         aria-volumemin="0" aria-volumemax="100" style="width: 57%">
-                                    </div>
-                                </div>
-                                <small>
-                                    57% Complete
-                                </small>
-                            </td>
                             <td class="project-state">
-                                <span class="badge badge-success">Success</span>
+                                {% if task.isFinish %}
+                                <span class="badge badge-success">Finish</span>
+                                {% else %}
+                                <span class="badge badge-info">Working</span>
+                                {% endif %}
                             </td>
                             <td class="project-actions text-right">
                                 <a class="btn btn-primary btn-sm" href="{{ task.taskId }}">

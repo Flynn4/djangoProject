@@ -25,6 +25,7 @@ class Task(models.Model):
     include_criterion = models.ManyToManyField(Criterion, blank=True)
     students = models.ManyToManyField(User, blank=True, related_name='students')
     mentor = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    isFinish = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -113,5 +114,4 @@ class UserProfile(models.Model):
     isStudent = models.BooleanField(default=False)
     isMentor = models.BooleanField(default=False)
     isStaff = models.BooleanField(default=False)
-    test = models.TextField(default="  ")
     team = models.ForeignKey(Team, null=True, blank=True, default=None, on_delete=models.CASCADE)

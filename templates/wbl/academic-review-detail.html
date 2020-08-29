@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="{% static 'adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
     <link rel="stylesheet"
           href="{% static 'adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
-    <!-- Toastr -->
-    <link rel="stylesheet" href="{% static 'adminlte/plugins/toastr/toastr.min.css' %}">
     <!-- summernote -->
     <link rel="stylesheet" href="{% static 'adminlte/plugins/summernote/summernote-bs4.css' %}">
 {% endblock %}
@@ -20,7 +18,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Evaluation by Mentor: <b>{{ task.name }}</b></h1>
+                    <h1>Academic Evaluation: <b>{{ task.name }}</b></h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -38,6 +36,49 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{ evaluation.peerReviewMark }}</h3>
+
+                <p>Peer Review Ratings</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{ evaluation.mentorReviewMark }}</h3>
+
+                <p>Mentor/Supervisor Rating</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+            </div>
+          </div>
+          <!-- ./col -->
+          <a class="col-lg-4 col-6" href="{% url 'wbl:tasks' %}{{ task.taskId }}">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>Task Details</h3>
+
+                <p>Click to check</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-arrow-circle-right"></i>
+              </div>
+            </div>
+          </a>
+        </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -417,9 +458,6 @@
     <script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
-    <!-- Toastr -->
-    <script src="{% static 'adminlte/plugins/toastr/toastr.min.js' %}"></script>
-    <!-- Page script -->
     <!-- Summernote -->
     <script src="{% static 'adminlte/plugins/summernote/summernote-bs4.min.js' %}"></script>
     <script>

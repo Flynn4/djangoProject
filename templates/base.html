@@ -26,6 +26,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <link rel="stylesheet" href="{% static "adminlte/dist/css/adminlte.min.css" %}">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <!-- Toastr -->
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/toastr/toastr.min.css' %}">
         {% block css %}
         {% endblock %}
     </head>
@@ -223,12 +225,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                {% if user.userprofile.isMentor %}
                                 <li class="nav-item">
                                     <a href="{% url 'wbl:task_add' %}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Task Add</p>
                                     </a>
                                 </li>
+                                    {% endif %}
                                 <li class="nav-item">
                                     <a href="{% url 'wbl:tasks' %}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -254,35 +258,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-envelope"></i>
-                                <p>
-                                    Mailbox
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/mailbox/mailbox.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inbox</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/mailbox/compose.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Compose</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/mailbox/read-mail.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Read</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+{#                        <li class="nav-item has-treeview">#}
+{#                            <a href="#" class="nav-link">#}
+{#                                <i class="nav-icon far fa-envelope"></i>#}
+{#                                <p>#}
+{#                                    Mailbox#}
+{#                                    <i class="fas fa-angle-left right"></i>#}
+{#                                </p>#}
+{#                            </a>#}
+{#                            <ul class="nav nav-treeview">#}
+{#                                <li class="nav-item">#}
+{#                                    <a href="pages/mailbox/mailbox.html" class="nav-link">#}
+{#                                        <i class="far fa-circle nav-icon"></i>#}
+{#                                        <p>Inbox</p>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li class="nav-item">#}
+{#                                    <a href="pages/mailbox/compose.html" class="nav-link">#}
+{#                                        <i class="far fa-circle nav-icon"></i>#}
+{#                                        <p>Compose</p>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li class="nav-item">#}
+{#                                    <a href="pages/mailbox/read-mail.html" class="nav-link">#}
+{#                                        <i class="far fa-circle nav-icon"></i>#}
+{#                                        <p>Read</p>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </li>#}
                         <li class="nav-item">
                             <a href="{% url 'wbl:example_form' %}" class="nav-link">
                                 <i class="fas fa-circle nav-icon"></i>
@@ -345,6 +349,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{% static 'adminlte/dist/js/adminlte.min.js' %}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{% static 'adminlte/dist/js/demo.js' %}"></script>
+        <!-- Toastr -->
+    <script src="{% static 'adminlte/plugins/toastr/toastr.min.js' %}"></script>
     {% block script %}
     {% endblock %}
     </body>

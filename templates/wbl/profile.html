@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load web_template_tags %}
 <!DOCTYPE html>
 
 {% block header %}
@@ -30,11 +31,11 @@
                     <!-- Profile Image -->
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
-                            <div class="text-center">
-                                <img class="profile-user-img img-fluid img-circle"
-                                     src="{% static 'adminlte/dist/img/user4-128x128.jpg' %}"
-                                     alt="User profile picture">
-                            </div>
+{#                            <div class="text-center">#}
+{#                                <img class="profile-user-img img-fluid img-circle"#}
+{#                                     src="{% static 'adminlte/dist/img/user4-128x128.jpg' %}"#}
+{#                                     alt="User profile picture">#}
+{#                            </div>#}
 
                             <h3 class="profile-username text-center">{{ user.username }}</h3>
 
@@ -104,7 +105,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">You are: <b>{{ user.userprofile.role.name }}</b></h3>
+                            <h3 class="card-title">You are studying to become: <b>{{ user.userprofile.role.name }}</b></h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body p-0">
@@ -116,6 +117,7 @@
                                     <th style="width: 20%">
                                         Status
                                     </th>
+                                    <th style="width: 20%">Total Credits</th>
                                     <th style="width: 10%">Action</th>
                                 </tr>
                                 </thead>
@@ -154,7 +156,10 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span class="badge badge-danger">Not Finish</span>
+                                            <span id="badge-{{ forloop.counter }}"></span>
+                                        </td>
+                                        <td>
+                                            <span id="totalCredits-{{ forloop.counter }}"></span>
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-default" data-toggle="modal"
@@ -186,11 +191,12 @@
                                                                             <th>Mentor Mark</th>
                                                                             <th>Academic Mark</th>
                                                                             <th>Total Competency Credits:</th>
-                                                                            <th style="width: 10%">Action</th>
+                                                                            <th style="width: 20%"></th>
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                        {% for task in criterion.task_set.all %}
+                                                                        {% findTasks user criterion.task_set.all as find_tasks %}
+                                                                        {% for task in find_tasks %}
                                                                             <tr>
                                                                                 <td>{{ task.taskId }}.</td>
                                                                                 <td>{{ task.name }}</td>
@@ -212,25 +218,23 @@
                                                                                             <span>{{ am.mark }}</span>
                                                                                         {% endif %}
                                                                                     {% endfor %}</td>
-                                                                                <td><span id="totalMark-{{ forloop.counter }}" style="color: red"></span>
+                                                                                <td><span
+                                                                                        id="totalMark-{{ forloop.counter }}"
+                                                                                        style="color: red"></span>
                                                                                 </td>
-                                                                                <td><a class="btn btn-primary btn-sm"
-                                                                                       href="
-
-
-
-
-
-
-
-
-
-
-                                                                                               {% url 'wbl:tasks' %}{{ task.taskId }}">
-                                                                                    <i class="fas fa-folder">
-                                                                                    </i>
-                                                                                    View
-                                                                                </a>
+                                                                                <td>
+                                                                                    <a class="btn btn-primary btn-sm"
+                                                                                       href="{% url 'wbl:tasks' %}{{ task.taskId }}">
+                                                                                        <i class="fas fa-folder">
+                                                                                        </i>
+                                                                                        Detail
+                                                                                    </a>
+                                                                                    <a class="btn btn-info btn-sm"
+                                                                                       href="{% url 'wbl:tasks' %}{{ task.taskId }}/evaluations">
+                                                                                        <i class="fas fa-star-half-alt">
+                                                                                        </i>
+                                                                                        Rating
+                                                                                    </a>
                                                                                 </td>
                                                                             </tr>
                                                                         {% endfor %}
@@ -275,7 +279,10 @@
 
         $(document).ready(function () {
             for (var j = 0; j < num; j++) {
-                var modal = 'modal-xl-tasks-' + (j +1)
+                var total = 0
+                var totalCredits = 'totalCredits-' + (j + 1)
+                var badge = 'badge-' + (j + 1)
+                var modal = 'modal-xl-tasks-' + (j + 1)
                 for (var i = 0; i < 3; i++) {
                     var prmMark = 'prmMark-' + (i + 1);
                     var mmMark = 'mmMark-' + (i + 1);
@@ -291,7 +298,16 @@
                     {#console.log(total)#}
                     if (!isNaN(sum)) {
                         $('#' + modal).find("span[id=" + totalMark + "]").text(sum);
+                        total += sum
                     }
+                }
+                $('#' + totalCredits).text(total)
+                if (total >= 15) {
+                    $('#' + badge).attr('class', 'badge badge-success');
+                    $('#' + badge).text('Success');
+                } else {
+                    $('#' + badge).attr('class', 'badge badge-danger')
+                    $('#' + badge).text('Not Finish')
                 }
             }
 
