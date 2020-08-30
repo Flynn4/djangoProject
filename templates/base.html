@@ -163,11 +163,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="{% static 'adminlte/index3.html' %}" class="brand-link">
-                <img src="{% static 'adminlte/dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo"
-                     class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <a href="{% url 'wbl:index' %}" class="brand-link" style="text-align: center">
+{#                <img src="{% static 'adminlte/dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo"#}
+{#                     class="brand-image img-circle elevation-3"#}
+{#                     style="opacity: .8">#}
+                <span class="brand-text font-weight-light">Work-Based Learning</span>
             </a>
 
             <!-- Sidebar -->

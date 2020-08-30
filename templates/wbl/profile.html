@@ -48,9 +48,21 @@
                                 <li class="list-group-item">
                                     <b>Role</b> <a class="float-right">{{ user.userprofile.role.name }}</a>
                                 </li>
+                                {% if user.userprofile.isMentor %}
                                 <li class="list-group-item">
-                                    <b>Team</b> <a class="float-right">A</a>
+                                    <b>Mentor</b> <a class="float-right">{{ user.mentor.all.0.mentor }}</a>
                                 </li>
+                                <li class="list-group-item">
+                                    <b>Team</b> <a class="float-right">{{ user.mentor.all.0.name }}</a>
+                                </li>
+                                    {% elif user.userprofile.isStudent %}
+                                    <li class="list-group-item">
+                                    <b>Mentor</b> <a class="float-right">{{ user.member.all.0.mentor }}</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Team</b> <a class="float-right">{{ user.member.all.0.name }}</a>
+                                </li>
+                                {% endif %}
                             </ul>
 
                             {#                            <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>#}
@@ -302,7 +314,7 @@
                     }
                 }
                 $('#' + totalCredits).text(total)
-                if (total >= 15) {
+                if (total >= 20) {
                     $('#' + badge).attr('class', 'badge badge-success');
                     $('#' + badge).text('Success');
                 } else {

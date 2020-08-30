@@ -102,7 +102,8 @@ class AcademicMark(models.Model):
 class Team(models.Model):
     teamId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    member = models.ManyToManyField(User, blank=True)
+    mentor = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE, related_name='mentor')
+    member = models.ManyToManyField(User, blank=True, related_name='member')
 
     def team_member(self):
         return ','.join([i.username for i in self.member.all()])
@@ -111,7 +112,7 @@ class Team(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     role = models.ForeignKey(Role, null=True, blank=True, default=None, on_delete=models.CASCADE)
-    isStudent = models.BooleanField(default=False)
+    isStudent = models.BooleanField(default=True)
     isMentor = models.BooleanField(default=False)
     isStaff = models.BooleanField(default=False)
     team = models.ForeignKey(Team, null=True, blank=True, default=None, on_delete=models.CASCADE)
