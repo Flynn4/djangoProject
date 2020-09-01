@@ -61,11 +61,25 @@ class TeamAdmin(admin.ModelAdmin):
 admin.site.register(Team, TeamAdmin)
 
 
-class CommentAdmin(admin.ModelAdmin):
+class TaskCommentAdmin(admin.ModelAdmin):
     list_display = ['user', 'task', 'comment', 'comment_time']
 
 
-admin.site.register(Comment, CommentAdmin)
+admin.site.register(TaskComment, TaskCommentAdmin)
+
+
+class MentorCommentAdmin(admin.ModelAdmin):
+    list_display = ['user', 'evaluation', 'comment', 'comment_time']
+
+
+admin.site.register(MentorComment, MentorCommentAdmin)
+
+
+class AcademicCommentAdmin(admin.ModelAdmin):
+    list_display = ['user', 'evaluation', 'comment', 'comment_time']
+
+
+admin.site.register(AcademicComment, AcademicCommentAdmin)
 
 
 # Define an inline admin descriptor for Employee model

@@ -35,7 +35,11 @@ def tasks(request):
 
 
 def task_add(request):
-    return render(request, 'wbl/task-add.html')
+    user = request.user
+    team = Team.objects.get(mentor=user)
+    members = team.member.all()
+    print(members)
+    return render(request, 'wbl/task-add.html', {'members': members})
 
 
 def add_task(request):
@@ -44,6 +48,8 @@ def add_task(request):
     detail = request.POST.get('detail')
     limit_time = request.POST.get('limit_time')
     criterions = request.POST.getlist('criterion_checkbox')
+    students = request.POST.getlist('students')
+    print(students)
     print(criterions)
     if Task.objects.filter(name=name).count() == 1:
         return HttpResponse('Error')
@@ -51,6 +57,9 @@ def add_task(request):
         t = Task.objects.get_or_create(name=name, detail=detail, limit_time=limit_time, mentor=user)[0]
         for c in criterions:
             t.include_criterion.add(c)
+        for s in students:
+            student = User.objects.get(username=s)
+            t.students.add(student)
         time.sleep(1)
         id = Task.objects.filter(name=name).values('taskId')[0]['taskId']
         return HttpResponse(id)
@@ -68,7 +77,7 @@ def task_edit(request, id):
 def task_detail(request, id):
     id = id.replace('/', '')
     task = Task.objects.get(taskId=id)
-    comments = Comment.objects.filter(task=task)
+    comments = TaskComment.objects.filter(task=task)
 
     return render(request, 'wbl/task-detail.html', {'task': task, 'comments': comments})
 
@@ -85,8 +94,17 @@ def add_comment(request):
     user = request.user
     taskId = request.POST.get('taskId')
     task = Task.objects.get(taskId=taskId)
+    evaluation = Evaluation.objects.get(task=task)
     comment = request.POST.get('comment')
-    c = Comment.objects.get_or_create(user=user, task=task, comment=comment)
+    commentType = request.POST.get('commentType')
+    print(commentType)
+    if commentType == 'Task':
+        tc = TaskComment.objects.get_or_create(user=user, task=task, comment=comment)
+    elif commentType == 'Mentor':
+        mc = MentorComment.objects.get_or_create(user=user, evaluation=evaluation, comment=comment)
+    elif commentType == 'Academic':
+        ac = AcademicComment.objects.get_or_create(user=user, evaluation=evaluation, comment=comment)
+    else: return HttpResponse('Error')
     return HttpResponse('OK')
 
 
@@ -118,8 +136,9 @@ def mentor_review_detail(request, taskId):
     for criterion in task.include_criterion.all():
         mm = MentorMark.objects.get_or_create(evaluation=evaluation, rater=rater, criterion=criterion)
     marks = MentorMark.objects.filter(evaluation=evaluation, rater=rater)
+    comments = MentorComment.objects.filter(evaluation=evaluation)
     return render(request, 'wbl/mentor-review-detail.html',
-                  {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
+                  {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation, 'comments':comments})
 
 
 def academic_review_detail(request, taskId):
@@ -129,8 +148,9 @@ def academic_review_detail(request, taskId):
     for criterion in task.include_criterion.all():
         am = AcademicMark.objects.get_or_create(evaluation=evaluation, rater=rater, criterion=criterion)
     marks = AcademicMark.objects.filter(evaluation=evaluation, rater=rater)
+    comments = AcademicComment.objects.filter(evaluation=evaluation)
     return render(request, 'wbl/academic-review-detail.html',
-                  {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
+                  {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation, 'comments':comments})
 
 
 def peer_review_detail(request, taskId, raterId):

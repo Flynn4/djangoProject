@@ -52,7 +52,7 @@
                                 <div class="post">
                                     <div class="user">
                                         <span class="username">
-                          <a href="#">{{ comment.user.username }}</a>
+                          <a href="#">{{ comment.user }}</a>
                         </span>
                                         <span class="description">{{ comment.comment_time }}</span>
                                     </div>
@@ -162,6 +162,7 @@
                 traditional: true,
                 data: {
                     'taskId': {{ task.taskId }},
+                    'commentType': 'Task',
                     'comment': $('#commentArea').val(),
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
                 },

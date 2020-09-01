@@ -59,7 +59,6 @@ class Evaluation(models.Model):
     academicReviewMark = models.IntegerField(default=0)
     totalMark = models.IntegerField(default=0)
     averageMark = models.FloatField(default=0)
-    finalComment = models.TextField(default=" ")
     peer_review_mark = models.ManyToManyField(Criterion, blank=True, through='PeerReviewMark',
                                               related_name='peer_review_mark')
     mentor_mark = models.ManyToManyField(Criterion, blank=True, through='MentorMark', related_name='mentor_mark')
@@ -119,7 +118,7 @@ class UserProfile(models.Model):
     team = models.ForeignKey(Team, null=True, blank=True, default=None, on_delete=models.CASCADE)
 
 
-class Comment(models.Model):
+class TaskComment(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, null=True, blank=True, default=None, on_delete=models.CASCADE)
     comment = models.TextField(default="")
@@ -127,3 +126,23 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.user.username + '---' + self.task.name
+
+
+class MentorComment(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    evaluation = models.ForeignKey(Evaluation, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    comment = models.TextField(default="")
+    comment_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + '---' + self.evaluation
+
+
+class AcademicComment(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    evaluation = models.ForeignKey(Evaluation, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    comment = models.TextField(default="")
+    comment_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + '---' + self.evaluation

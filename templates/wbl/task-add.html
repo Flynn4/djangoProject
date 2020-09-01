@@ -69,15 +69,15 @@
                                     <label for="inputDescription">Task Description</label>
                                     <textarea id="inputDescription" class="form-control" rows="4"></textarea>
                                 </div>
-{#                                <div class="form-group">#}
-{#                                    <label for="inputStatus">Status</label>#}
-{#                                    <select class="form-control custom-select">#}
-{#                                        <option selected disabled>Select one</option>#}
-{#                                        <option>On Hold</option>#}
-{#                                        <option>Canceled</option>#}
-{#                                        <option>Success</option>#}
-{#                                    </select>#}
-{#                                </div>#}
+                                {#                                <div class="form-group">#}
+                                {#                                    <label for="inputStatus">Status</label>#}
+                                {#                                    <select class="form-control custom-select">#}
+                                {#                                        <option selected disabled>Select one</option>#}
+                                {#                                        <option>On Hold</option>#}
+                                {#                                        <option>Canceled</option>#}
+                                {#                                        <option>Success</option>#}
+                                {#                                    </select>#}
+                                {#                                </div>#}
                                 <!-- Date -->
                                 <div class="form-group">
                                     <label>Limit Date:</label>
@@ -91,10 +91,16 @@
                                     </div>
                                 </div>
                                 <!-- /.form group -->
-{#                                <div class="form-group">#}
-{#                                    <label for="inputTaskLeader">Task Leader</label>#}
-{#                                    <input type="text" id="inputTaskLeader" class="form-control">#}
-{#                                </div>#}
+                                <div class="form-group">
+                                    <label>Select Students</label>
+                                    <select multiple class="form-control" id="memberSelect">
+                                        {% for member in members %}
+                                            {% ifnotequal user member %}
+                                                <option>{{ member.username }}</option>
+                                            {% endifnotequal %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-6">
 
@@ -115,7 +121,9 @@
                                                 <td>{{ criterion.name }}</td>
                                                 <td>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="{{ criterion.criterionId }}" id="criterion_checkbox">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               value="{{ criterion.criterionId }}"
+                                                               id="criterion_checkbox">
                                                         <label class="form-check-label"></label>
                                                     </div>
                                                 </td>
@@ -242,9 +250,9 @@
     <script>
         function AjaxTaskAdd() {
             var checkID = []
-            $('#criterion_checkbox:checked').each(function(i){
-                      checkID[i] = $(this).val();
-                });
+            $('#criterion_checkbox:checked').each(function (i) {
+                checkID[i] = $(this).val();
+            });
             console.log(checkID)
             $('#createNewTask').attr('disabled', 'disabled')
             if ($('#reservationdate').find('input').val() === "") {
@@ -259,6 +267,9 @@
             } else if (checkID.length == 0) {
                 toastr.error('Error! Please choose at least one Criterion!');
                 $('#createNewTask').removeAttr('disabled');
+            } else if ($('#memberSelect').val() == '') {
+                toastr.error('Error! Please choose at least one Student!');
+                $('#createNewTask').removeAttr('disabled');
             } else {
                 console.log($('#reservationdate').find('input').val());
                 $.ajax({
@@ -269,7 +280,8 @@
                         'name': $('#inputName').val(),
                         'detail': $('#inputDescription').val(),
                         'limit_time': $('#reservationdate').find('input').val(),
-                        'criterion_checkbox': checkID,
+                        'criterion_checkbox': checkID, //list
+                        'students': $('#memberSelect').val(), //list
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
                     },
                     success: function (data) {
