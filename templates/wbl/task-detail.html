@@ -48,51 +48,38 @@
                         <div class="row">
                             <div class="col-12">
                                 <h4>Recent Activity</h4>
+                                {% for comment in comments %}
                                 <div class="post">
                                     <div class="user">
                                         <span class="username">
-                          <a href="#">Jonathan Burke Jr.</a>
+                          <a href="#">{{ comment.user.username }}</a>
                         </span>
-                                        <span class="description">Shared publicly - 7:45 PM today</span>
+                                        <span class="description">{{ comment.comment_time }}</span>
                                     </div>
                                     <!-- /.user-block -->
-                                    <p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore.
+                                    <p style="font-size: 20px">
+                                        {{ comment.comment }}
                                     </p>
 
                                 </div>
-
-                                <div class="post clearfix">
-                                    <div class="user">
-                                        <span class="username">
-                          <a href="#">Sarah Ross</a>
-                        </span>
-                                        <span class="description">Sent you a message - 3 days ago</span>
-                                    </div>
-                                    <!-- /.user-block -->
-                                    <p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore.
-                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                <!-- textarea -->
+                                <div class="form-group">
+                                    <label>{{ user.username }}</label>
+                                    <textarea id="commentArea" class="form-control" rows="3"
+                                              placeholder="Add your comment ..."></textarea>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="button" class="btn btn-success float-right"
+                                        onclick="AjaxAddComment()">Add Comment</button>
 
-                                <div class="post">
-                                    <div class="user">
-                                        <span class="username">
-                          <a href="#">Jonathan Burke Jr.</a>
-                        </span>
-                                        <span class="description">Shared publicly - 5 days ago</span>
-                                    </div>
-                                    <!-- /.user-block -->
-                                    <p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore.
-                                    </p>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -121,14 +108,14 @@
                         <div class="text-center mt-5 mb-3">
                             {% if task.isFinish %}
                                 <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                    data-target="#modal-default" disabled>
-                                Task is finished
-                            </button>
+                                        data-target="#modal-default" disabled>
+                                    Task is finished
+                                </button>
                             {% else %}
-                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                    data-target="#modal-default">
-                                Finish Task
-                            </button>
+                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                        data-target="#modal-default">
+                                    Finish Task
+                                </button>
                             {% endif %}
                             <div class="modal fade" id="modal-default">
                                 <div class="modal-dialog">
@@ -168,6 +155,30 @@
 {% endblock %}
 {% block script %}
     <script>
+        function AjaxAddComment() {
+            $.ajax({
+                url: {% url 'wbl:add_comment' %},
+                type: 'POST',
+                traditional: true,
+                data: {
+                    'taskId': {{ task.taskId }},
+                    'comment': $('#commentArea').val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    console.log(data)
+                    value = data
+                    if (data === 'OK') {
+                        toastr.success('Add Comment Successful!')
+                        setTimeout('jump(value)', 1000)
+                    } else {
+                        toastr.error('Error! Please check again!')
+                        $('#createNewTask').removeAttr('disabled')
+                    }
+                }
+            });
+        }
+
         function AjaxFinishTask() {
             console.log($('#reservationdate').find('input').val());
             $.ajax({

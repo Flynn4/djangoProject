@@ -61,6 +61,13 @@ class TeamAdmin(admin.ModelAdmin):
 admin.site.register(Team, TeamAdmin)
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['user', 'task', 'comment', 'comment_time']
+
+
+admin.site.register(Comment, CommentAdmin)
+
+
 # Define an inline admin descriptor for Employee model
 # which acts a bit like a singleton
 class UserProfileInline(admin.StackedInline):

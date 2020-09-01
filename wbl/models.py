@@ -102,7 +102,8 @@ class AcademicMark(models.Model):
 class Team(models.Model):
     teamId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    mentor = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE, related_name='mentor')
+    mentor = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE,
+                               related_name='mentor')
     member = models.ManyToManyField(User, blank=True, related_name='member')
 
     def team_member(self):
@@ -116,3 +117,13 @@ class UserProfile(models.Model):
     isMentor = models.BooleanField(default=False)
     isStaff = models.BooleanField(default=False)
     team = models.ForeignKey(Team, null=True, blank=True, default=None, on_delete=models.CASCADE)
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    comment = models.TextField(default="")
+    comment_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + '---' + self.task.name

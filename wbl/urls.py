@@ -23,4 +23,5 @@ urlpatterns = [
     path('get-choose-role/', views.get_choose_role, name='get_choose_role'),
     path('save-mark/', views.save_mark, name='save_mark'),
     path('finish-task/', views.finish_task, name='finish_task'),
+    path('add-comment/', views.add_comment, name='add_comment'),
 ]

@@ -66,11 +66,11 @@ def task_edit(request, id):
 
 
 def task_detail(request, id):
-    dict = {}
     id = id.replace('/', '')
-    dict['task'] = Task.objects.filter(taskId=id)[0]
+    task = Task.objects.get(taskId=id)
+    comments = Comment.objects.filter(task=task)
 
-    return render(request, 'wbl/task-detail.html', dict)
+    return render(request, 'wbl/task-detail.html', {'task': task, 'comments': comments})
 
 
 def finish_task(request):
@@ -79,6 +79,16 @@ def finish_task(request):
     task.isFinish = True
     task.save()
     return HttpResponse('OK')
+
+
+def add_comment(request):
+    user = request.user
+    taskId = request.POST.get('taskId')
+    task = Task.objects.get(taskId=taskId)
+    comment = request.POST.get('comment')
+    c = Comment.objects.get_or_create(user=user, task=task, comment=comment)
+    return HttpResponse('OK')
+
 
 
 def evaluation_list(request):
