@@ -10,6 +10,7 @@ urlpatterns = [
     path('tasks/', views.tasks, name='tasks'),
     path('task-add/', views.task_add, name='task_add'),
     path('add-task/', views.add_task, name='add_task'),
+    path('delete-task/', views.delete_task, name='delete_task'),
     re_path(r'^tasks/(\d+)/edit$', views.task_edit, name='task_edit'),
     re_path(r'^tasks/(\d+.)$', views.task_detail, name='task_detail'),
     re_path(r'^tasks/(\d+)/evaluations$', views.evaluations, name='evaluations'),

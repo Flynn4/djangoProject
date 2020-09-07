@@ -8,7 +8,7 @@ from .models import *
 def index(request):
     # Add all details into dict
     dict = {}
-    return render(request, 'wbl/index.html', dict)
+    return render(request, 'wbl/dashboard.html', dict)
 
 
 def profile(request):
@@ -30,7 +30,10 @@ def dashboard(request):
 
 def tasks(request):
     user = request.user
-    tasks = Task.objects.filter(students__exact=user)
+    if user.userprofile.isStudent:
+        tasks = Task.objects.filter(students__exact=user)
+    else:
+        tasks = Task.objects.filter(mentor=user)
     return render(request, 'wbl/tasks.html', {'tasks': tasks})
 
 
@@ -63,6 +66,16 @@ def add_task(request):
         time.sleep(1)
         id = Task.objects.filter(name=name).values('taskId')[0]['taskId']
         return HttpResponse(id)
+
+
+def delete_task(request):
+    user = request.user
+    taskId = request.POST.get('taskId')
+    print(user)
+    print(taskId)
+    if not user.userprofile.isStudent:
+        Task.objects.filter(taskId=taskId).delete()
+        return HttpResponse('OK')
 
 
 def task_edit(request, id):
