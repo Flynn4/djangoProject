@@ -39,10 +39,13 @@ def tasks(request):
 
 def task_add(request):
     user = request.user
-    team = Team.objects.get(mentor=user)
-    members = team.member.all()
-    print(members)
-    return render(request, 'wbl/task-add.html', {'members': members})
+    if not Team.objects.filter(mentor=user).count() == 0:
+        team = Team.objects.get(mentor=user)
+        print(team)
+        members = team.member.all()
+        print(members)
+        return render(request, 'wbl/task-add.html', {'members': members})
+    return render(request, 'wbl/task-add.html', {'members': None})
 
 
 def add_task(request):
@@ -107,15 +110,16 @@ def add_comment(request):
     user = request.user
     taskId = request.POST.get('taskId')
     task = Task.objects.get(taskId=taskId)
-    evaluation = Evaluation.objects.get(task=task)
     comment = request.POST.get('comment')
     commentType = request.POST.get('commentType')
     print(commentType)
     if commentType == 'Task':
         tc = TaskComment.objects.get_or_create(user=user, task=task, comment=comment)
     elif commentType == 'Mentor':
+        evaluation = Evaluation.objects.get(task=task)
         mc = MentorComment.objects.get_or_create(user=user, evaluation=evaluation, comment=comment)
     elif commentType == 'Academic':
+        evaluation = Evaluation.objects.get(task=task)
         ac = AcademicComment.objects.get_or_create(user=user, evaluation=evaluation, comment=comment)
     else: return HttpResponse('Error')
     return HttpResponse('OK')

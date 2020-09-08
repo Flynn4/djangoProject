@@ -93,6 +93,7 @@
                                 <!-- /.form group -->
                                 <div class="form-group">
                                     <label>Select Students</label>
+                                {% if members is not None %}
                                     <select multiple class="form-control" id="memberSelect">
                                         {% for member in members %}
                                             {% ifnotequal user member %}
@@ -100,6 +101,9 @@
                                             {% endifnotequal %}
                                         {% endfor %}
                                     </select>
+                                    {% else %}
+                                    <p>You do not have any supervisees! Please contact admin!</p>
+                                {% endif %}
                                 </div>
                             </div>
                             <div class="col-md-6">
