@@ -56,13 +56,12 @@ class Evaluation(models.Model):
     rater = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
     peerReviewMark = models.IntegerField(default=0)
     mentorReviewMark = models.IntegerField(default=0)
-    academicReviewMark = models.IntegerField(default=0)
     totalMark = models.IntegerField(default=0)
     averageMark = models.FloatField(default=0)
     peer_review_mark = models.ManyToManyField(Criterion, blank=True, through='PeerReviewMark',
                                               related_name='peer_review_mark')
     mentor_mark = models.ManyToManyField(Criterion, blank=True, through='MentorMark', related_name='mentor_mark')
-    academic_mark = models.ManyToManyField(Criterion, blank=True, through='AcademicMark', related_name='academic_mark')
+    isPass = models.BooleanField(default=False)
 
     def __str__(self):
         return self.task.name
@@ -88,25 +87,19 @@ class MentorMark(models.Model):
         db_table = 'mentor_mark'
 
 
-class AcademicMark(models.Model):
-    evaluation = models.ForeignKey(Evaluation, null=True, blank=True, default=None, on_delete=models.CASCADE)
-    criterion = models.ForeignKey(Criterion, null=True, blank=True, default=None, on_delete=models.CASCADE)
-    rater = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
-    mark = models.IntegerField(default=0)
-
-    class Meta:
-        db_table = 'academic_mark'
-
-
 class Team(models.Model):
     teamId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    role = models.ForeignKey(Role, null=True, blank=True, default=None, on_delete=models.CASCADE)
     mentor = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE,
                                related_name='mentor')
     member = models.ManyToManyField(User, blank=True, related_name='member')
 
     def team_member(self):
         return ','.join([i.username for i in self.member.all()])
+
+    def __str__(self):
+        return self.name
 
 
 class UserProfile(models.Model):
@@ -115,7 +108,7 @@ class UserProfile(models.Model):
     isStudent = models.BooleanField(default=True)
     isMentor = models.BooleanField(default=False)
     isStaff = models.BooleanField(default=False)
-    team = models.ForeignKey(Team, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    isGraduate = models.BooleanField(default=False)
 
 
 class TaskComment(models.Model):
@@ -135,7 +128,7 @@ class MentorComment(models.Model):
     comment_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username + '---' + self.evaluation
+        return self.user.username + '---' + self.evaluation.task.name
 
 
 class AcademicComment(models.Model):
@@ -145,4 +138,14 @@ class AcademicComment(models.Model):
     comment_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username + '---' + self.evaluation
+        return self.user.username + '---' + self.evaluation.task.name
+
+
+class UserCriterionMark(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    criterion = models.ForeignKey(Criterion, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    evaluation = models.ForeignKey(Evaluation, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    mark = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user.username + '---' + self.criterion.name

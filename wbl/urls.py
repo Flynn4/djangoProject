@@ -25,4 +25,5 @@ urlpatterns = [
     path('save-mark/', views.save_mark, name='save_mark'),
     path('finish-task/', views.finish_task, name='finish_task'),
     path('add-comment/', views.add_comment, name='add_comment'),
+    path('academic-pass/', views.academic_pass, name='academic_pass'),
 ]

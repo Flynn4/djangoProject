@@ -47,13 +47,6 @@ class MentorMarkAdmin(admin.ModelAdmin):
 admin.site.register(MentorMark, MentorMarkAdmin)
 
 
-class AcademicMarkAdmin(admin.ModelAdmin):
-    list_display = ['evaluation', 'rater', 'criterion', 'mark']
-
-
-admin.site.register(AcademicMark, AcademicMarkAdmin)
-
-
 class TeamAdmin(admin.ModelAdmin):
     list_display = ['teamId', 'name', 'team_member']
 
@@ -80,6 +73,13 @@ class AcademicCommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(AcademicComment, AcademicCommentAdmin)
+
+
+class UserCriterionMarkAdmin(admin.ModelAdmin):
+    list_display = ['user', 'criterion', 'evaluation', 'mark']
+
+
+admin.site.register(UserCriterionMark, UserCriterionMarkAdmin)
 
 
 # Define an inline admin descriptor for Employee model
