@@ -196,6 +196,7 @@ def get_choose_role(request):
         u.save()
     elif u.isStudent:
         u.role = role
+        u.save()
         for team in Team.objects.filter(role=role):
             if team.member.count() <= 4:
                 team.member.add(user)
