@@ -38,8 +38,10 @@ def tasks(request):
     user = request.user
     if user.userprofile.isStudent:
         tasks = Task.objects.filter(students__exact=user)
-    else:
+    elif user.userprofile.isMentor:
         tasks = Task.objects.filter(mentor=user)
+    elif user.userprofile.isStaff:
+        tasks = Task.objects.all()
     return render(request, 'wbl/tasks.html', {'tasks': tasks})
 
 
