@@ -114,175 +114,231 @@
                     <!-- /.card -->
                 </div>
                 <!-- /.col -->
-                <div class="col-md-9">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">You are studying to become: <b>{{ user.userprofile.role.name }}</b>
-                            </h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body p-0">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Competency</th>
-                                    <th style="width: 20%">
-                                        Status
-                                    </th>
-                                    <th style="width: 20%">Total Credits</th>
-                                    <th style="width: 10%">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for criterion in criterions %}
+                {% if user.userprofile.isStudent %}
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">You are studying to become:
+                                    <b>{{ user.userprofile.role.name }}</b>
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body p-0">
+                                <table class="table table-striped">
+                                    <thead>
                                     <tr>
-                                        <td>{{ forloop.counter }}.</td>
-                                        <td>{{ criterion.name }} &nbsp;&nbsp;
-                                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal"
-                                                    data-target="#modal-xl-detail-{{ forloop.counter }}">
-                                                Check Details
-                                            </button>
-                                            <div class="modal fade" id="modal-xl-detail-{{ forloop.counter }}">
-                                                <div class="modal-dialog modal-xl">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Criterion Detail</h4>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p>{{ criterion.detail }}</p>
-                                                        </div>
-                                                        <div class="modal-footer justify-content-between">
-                                                            <p></p>
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">Close
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                </div>
-                                                <!-- /.modal-dialog -->
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span id="badge-{{ forloop.counter }}"></span>
-                                        </td>
-                                        <td>
-                                            <span id="totalCredits-{{ forloop.counter }}"></span>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-default" data-toggle="modal"
-                                                    data-target="#modal-xl-tasks-{{ forloop.counter }}">
-                                                <i class="fas fa-tasks">
-                                                </i> Tasks
-                                            </button>
-                                            <div class="modal fade" id="modal-xl-tasks-{{ forloop.counter }}">
-                                                <div class="modal-dialog modal-xl">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Tasks</h4>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="card">
-
-                                                                <!-- /.card-header -->
-                                                                <div class="card-body p-0">
-                                                                    <table class="table table-striped">
-                                                                        <thead>
-                                                                        <tr>
-                                                                            <th style="width: 10px">ID</th>
-                                                                            <th>Task Name</th>
-                                                                            <th>Peer Review Mark</th>
-                                                                            <th>Mentor Mark</th>
-                                                                            <th>Academic Review</th>
-                                                                            <th>Total Competency Credits:</th>
-                                                                            <th style="width: 20%"></th>
-                                                                        </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                        {% findTasks user criterion.task_set.all as find_tasks %}
-                                                                        {% for task in find_tasks %}
-                                                                            <tr>
-                                                                                <td>{{ task.taskId }}.</td>
-                                                                                <td>{{ task.name }}</td>
-                                                                                <td id="prmMark-{{ forloop.counter }}">
-                                                                                    {% for prm in task.evaluation_set.all.0.peerreviewmark_set.all %}
-                                                                                        {% if prm.criterion == criterion %}
-                                                                                            {{ prm.mark }}
-                                                                                        {% endif %}
-                                                                                    {% endfor %}</td>
-                                                                                <td id="mmMark-{{ forloop.counter }}">
-                                                                                    {% for mm in task.evaluation_set.all.0.mentormark_set.all %}
-                                                                                        {% if mm.criterion == criterion %}
-                                                                                            <span>{{ mm.mark }}</span>
-                                                                                        {% endif %}
-                                                                                    {% endfor %}</td>
-                                                                                <td id="amMark-{{ forloop.counter }}">
-                                                                                    {% if task.evaluation_set.all.0.isPass %}
-                                                                                        <span class="badge badge-success">Pass</span>
-                                                                                        {% else %}
-                                                                                        <span class="badge badge-danger">Reviewing</span>
-                                                                                    {% endif %}
-                                                                                </td>
-                                                                                <td><span
-                                                                                        id="totalMark-{{ forloop.counter }}"
-                                                                                        style="color: red"></span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <a class="btn btn-primary btn-sm"
-                                                                                       href="
-
-                                                                                               {% url 'wbl:tasks' %}{{ task.taskId }}">
-                                                                                        <i class="fas fa-folder">
-                                                                                        </i>
-                                                                                        Detail
-                                                                                    </a>
-                                                                                    <a class="btn btn-info btn-sm"
-                                                                                       href="
-
-                                                                                               {% url 'wbl:tasks' %}{{ task.taskId }}/evaluations">
-                                                                                        <i class="fas fa-star-half-alt">
-                                                                                        </i>
-                                                                                        Rating
-                                                                                    </a>
-                                                                                </td>
-                                                                            </tr>
-                                                                        {% endfor %}
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                                <!-- /.card-body -->
+                                        <th style="width: 10px">#</th>
+                                        <th>Competency</th>
+                                        <th style="width: 20%">
+                                            Status
+                                        </th>
+                                        <th style="width: 20%">Total Credits</th>
+                                        <th style="width: 10%">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for criterion in criterions %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}.</td>
+                                            <td>{{ criterion.name }} &nbsp;&nbsp;
+                                                <button type="button" class="btn btn-info btn-xs" data-toggle="modal"
+                                                        data-target="#modal-xl-detail-{{ forloop.counter }}">
+                                                    Check Details
+                                                </button>
+                                                <div class="modal fade" id="modal-xl-detail-{{ forloop.counter }}">
+                                                    <div class="modal-dialog modal-xl">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Criterion Detail</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>{{ criterion.detail }}</p>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <p></p>
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Close
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                        <div class="modal-footer justify-content-between">
-                                                            <p></p>
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">Close
-                                                            </button>
-                                                        </div>
+                                                        <!-- /.modal-content -->
                                                     </div>
-                                                    <!-- /.modal-content -->
+                                                    <!-- /.modal-dialog -->
                                                 </div>
-                                                <!-- /.modal-dialog -->
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                            </td>
+                                            <td>
+                                                <span id="badge-{{ forloop.counter }}"></span>
+                                            </td>
+                                            <td>
+                                                <span id="totalCredits-{{ forloop.counter }}"></span>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-default" data-toggle="modal"
+                                                        data-target="#modal-xl-tasks-{{ forloop.counter }}">
+                                                    <i class="fas fa-tasks">
+                                                    </i> Tasks
+                                                </button>
+                                                <div class="modal fade" id="modal-xl-tasks-{{ forloop.counter }}">
+                                                    <div class="modal-dialog modal-xl">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Tasks</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="card">
+
+                                                                    <!-- /.card-header -->
+                                                                    <div class="card-body p-0">
+                                                                        <table class="table table-striped">
+                                                                            <thead>
+                                                                            <tr>
+                                                                                <th style="width: 10px">ID</th>
+                                                                                <th>Task Name</th>
+                                                                                <th>Peer Review Mark</th>
+                                                                                <th>Mentor Mark</th>
+                                                                                <th>Academic Review</th>
+                                                                                <th>Total Competency Credits:</th>
+                                                                                <th style="width: 20%"></th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody>
+{#                                                                            {% findTasks user criterion.task_set.all as find_tasks %}#}
+                                                                            {% for task in tasks %}
+                                                                                {% ifequal task.0.criterionId criterion.criterionId %}
+                                                                                <tr>
+                                                                                    <td>{{ task.1.taskId }}.</td>
+                                                                                    <td>{{ task.1.name }}</td>
+                                                                                    <td id="prmMark-{{ forloop.counter }}">
+                                                                                        {{ task.2 }}</td>
+                                                                                    <td id="mmMark-{{ forloop.counter }}">
+                                                                                        {{ task.3 }}</td>
+                                                                                    <td id="amMark-{{ forloop.counter }}">
+                                                                                        {% if task.1.evaluation_set.all.0.isPass %}
+                                                                                            <span class="badge badge-success">Pass</span>
+                                                                                        {% else %}
+                                                                                            <span class="badge badge-danger">Reviewing</span>
+                                                                                        {% endif %}
+                                                                                    </td>
+                                                                                    <td><span
+                                                                                            id="totalMark-{{ forloop.counter }}"
+                                                                                            style="color: red"> {{ task.4 }}</span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a class="btn btn-primary btn-sm"
+                                                                                           href="{% url 'wbl:tasks' %}{{ task.1.taskId }}">
+                                                                                            <i class="fas fa-folder">
+                                                                                            </i>
+                                                                                            Detail
+                                                                                        </a>
+                                                                                        <a class="btn btn-info btn-sm"
+                                                                                           href="{% url 'wbl:tasks' %}{{ task.1.taskId }}/evaluations">
+                                                                                            <i class="fas fa-star-half-alt">
+                                                                                            </i>
+                                                                                            Rating
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                {% endifequal %}
+                                                                            {% endfor %}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    <!-- /.card-body -->
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <p></p>
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card-body -->
+                        <!-- /.nav-tabs-custom -->
                     </div>
-                    <!-- /.nav-tabs-custom -->
-                </div>
+                {% elif user.userprofile.isMentor %}
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">You are the leader of <b>{{ user.mentor.all.0.name }}</b>, you
+                                    should assign task for <b>{{ user.userprofile.role.name }}</b>
+                                    <br/>
+                                    Your team member: {% for member in user.mentor.all.0.member.all %}<br/>
+                                        {{ member.username }}{% endfor %}
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body p-0">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Competency</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for criterion in criterions %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}.</td>
+                                            <td>{{ criterion.name }} &nbsp;&nbsp;
+                                                <button type="button" class="btn btn-info btn-xs" data-toggle="modal"
+                                                        data-target="#modal-xl-detail-{{ forloop.counter }}">
+                                                    Check Details
+                                                </button>
+                                                <div class="modal fade" id="modal-xl-detail-{{ forloop.counter }}">
+                                                    <div class="modal-dialog modal-xl">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Criterion Detail</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>{{ criterion.detail }}</p>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <p></p>
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.nav-tabs-custom -->
+                    </div>
+                {% endif %}
                 <!-- /.col -->
             </div>
             <!-- /.row -->
@@ -301,7 +357,7 @@
                 var totalCredits = 'totalCredits-' + (j + 1)
                 var badge = 'badge-' + (j + 1)
                 var modal = 'modal-xl-tasks-' + (j + 1)
-                for (var i = 0; i < 3; i++) {
+                for (var i = 0; i < {{ tasks|length }}; i++) {
                     var prmMark = 'prmMark-' + (i + 1);
                     var mmMark = 'mmMark-' + (i + 1);
                     var amMark = 'amMark-' + (i + 1);

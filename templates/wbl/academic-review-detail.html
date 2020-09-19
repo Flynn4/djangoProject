@@ -93,7 +93,7 @@
 
                         <div class="card-body">
                             {% if evaluation.isPass %}
-                                <button type="button" class="btn btn-success btn-block btn-lg" disabled>Task is Pass
+                                <button type="button" class="btn btn-success btn-block btn-lg" disabled>Evaluation is Pass
                             </button>
                                 {% else %}
                             <button type="button" class="btn btn-success btn-block btn-lg" data-toggle="modal"
@@ -155,6 +155,7 @@
                     {% endfor %}
                 </div>
             </div>
+        {% if user.userprofile.isStaff %}
             <div class="row">
                 <div class="col-sm">
                     <!-- textarea -->
@@ -173,6 +174,7 @@
 
                 </div>
             </div>
+        {% endif %}
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
@@ -346,7 +348,7 @@
                     console.log(data)
                     value = data
                     if (data === 'OK') {
-                        toastr.success('Task Successfully Pass!')
+                        toastr.success('Evaluation Successfully Pass!')
                         setTimeout('jump()', 1000)
                     } else {
                         toastr.error('Error! Please contact the admin!')

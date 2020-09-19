@@ -15,13 +15,19 @@ def profile(request):
     user = request.user
     role = UserProfile.objects.get(user=user).role
     criterions = role.role_have.all()
+    tasks = []
+    for criterion in criterions:
+        for task in criterion.task_set.all().filter(students__exact=user):
+            totalPRM = 0
+            for prm in PeerReviewMark.objects.filter(evaluation__task_id=task.taskId, criterion=criterion):
+                totalPRM += prm.mark
+            totalMM = 0
+            for mm in MentorMark.objects.filter(evaluation__task_id=task.taskId, criterion=criterion):
+                totalMM += mm.mark
+            totalMark = totalPRM + totalMM
+            tasks.append([criterion, task, totalPRM, totalMM, totalMark])
 
-    # for criterion in criterions:
-    #     prm = PeerReviewMark.objects.filter()
-    #     for task in user.task_set.all():
-    #         print(task.taskId)
-
-    return render(request, 'wbl/profile.html', {'criterions': criterions})
+    return render(request, 'wbl/profile.html', {'criterions': criterions, 'tasks': tasks})
 
 
 def dashboard(request):
@@ -127,14 +133,21 @@ def add_comment(request):
 
 
 def evaluation_list(request):
-    dict = {}
-    dict['tasks'] = Task.objects.all()
-    return render(request, 'wbl/evaulation-list.html', dict)
+    user = request.user
+    if user.userprofile.isStudent:
+        tasks = Task.objects.filter(students__exact=user)
+    elif user.userprofile.isMentor:
+        tasks = Task.objects.filter(mentor=user)
+    elif user.userprofile.isStaff:
+        tasks = Task.objects.all()
+    return render(request, 'wbl/evaulation-list.html', {'tasks': tasks})
 
 
 def evaluations(request, id):
     user = request.user
-    e = Evaluation.objects.get_or_create(task_id=id, rater=user)[0]
+    e = Evaluation.objects.get_or_create(task_id=id)[0]
+    if user.userprofile.isMentor:
+        e.rater = user
     e.save()
     task = Task.objects.filter(taskId=id)[0]
     return render(request, 'wbl/evaluations.html', {'task': task, 'evaluation': e})
@@ -142,14 +155,20 @@ def evaluations(request, id):
 
 def peer_review(request, id):
     task = Task.objects.filter(taskId=id)[0]
-    evaluations = Evaluation.objects.filter(task=task)
-    return render(request, 'wbl/peer-review.html', {'task': task, 'evaluations': evaluations})
+    evaluation = Evaluation.objects.get(task_id=id)
+    reviews = []
+    for student in task.students.all():
+        total = 0
+        for prm in PeerReviewMark.objects.filter(evaluation=evaluation, rater=student):
+            total += prm.mark
+        reviews.append((student, total))
+    return render(request, 'wbl/peer-review.html', {'task': task, 'reviews': reviews})
 
 
 def mentor_review_detail(request, taskId):
     task = Task.objects.filter(taskId=taskId)[0]
     rater = task.mentor
-    evaluation = Evaluation.objects.filter(task=task, rater=rater)[0]
+    evaluation = Evaluation.objects.filter(task=task)[0]
     for criterion in task.include_criterion.all():
         mm = MentorMark.objects.get_or_create(evaluation=evaluation, rater=rater, criterion=criterion)
     marks = MentorMark.objects.filter(evaluation=evaluation, rater=rater)
@@ -161,7 +180,7 @@ def mentor_review_detail(request, taskId):
 def academic_review_detail(request, taskId):
     task = Task.objects.filter(taskId=taskId)[0]
     rater = task.mentor
-    evaluation = Evaluation.objects.filter(task=task, rater=rater)[0]
+    evaluation = Evaluation.objects.filter(task=task)[0]
     comments = AcademicComment.objects.filter(evaluation=evaluation)
     return render(request, 'wbl/academic-review-detail.html',
                   {'task': task, 'rater': rater, 'evaluation': evaluation, 'comments': comments})
@@ -171,12 +190,15 @@ def peer_review_detail(request, taskId, raterId):
     raterId = raterId.replace('/', '')
     task = Task.objects.filter(taskId=taskId)[0]
     rater = User.objects.filter(id=raterId)[0]
-    evaluation = Evaluation.objects.filter(task=task, rater=rater)[0]
+    evaluation = Evaluation.objects.filter(task=task)[0]
     for criterion in task.include_criterion.all():
         prm = PeerReviewMark.objects.get_or_create(evaluation=evaluation, rater=rater, criterion=criterion)
     marks = PeerReviewMark.objects.filter(evaluation=evaluation, rater=rater)
+    totalMark = 0
+    for prm in PeerReviewMark.objects.filter(evaluation=evaluation, rater=rater):
+        totalMark += prm.mark
     return render(request, 'wbl/peer-review-detail.html',
-                  {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
+                  {'task': task, 'rater': rater, 'marks': marks, 'totalMark': totalMark})
 
 
 def choose_role(request):
@@ -214,15 +236,7 @@ def save_mark(request):
     peerReviewMark = request.POST.get('peerReviewMark')
     mentorReviewMark = request.POST.get('mentorReviewMark')
     criterionMark = json.loads(request.POST.getlist('criterionMark')[0])
-    e = Evaluation.objects.get(task_id=taskId, rater=user)
-    if peerReviewMark is not None:
-        e.peerReviewMark = peerReviewMark
-    elif mentorReviewMark is not None:
-        e.mentorReviewMark = mentorReviewMark
-    e.totalMark = int(e.peerReviewMark) + int(e.mentorReviewMark)
-    e.averageMark = round(e.totalMark / 2, 1)
-    e.rater = user
-    e.save()
+    e = Evaluation.objects.get(task_id=taskId)
 
     for c in criterionMark:
         criterion = Criterion.objects.get(name=c['name'])
@@ -231,17 +245,27 @@ def save_mark(request):
         elif mentorReviewMark is not None:
             cm = MentorMark.objects.get_or_create(evaluation=e, criterion=criterion, rater=user)[0]
         cm.mark = c['mark']
-        print(cm)
         cm.save()
 
-    print(e)
+    if mentorReviewMark is not None:
+        e.mentorReviewMark = mentorReviewMark
+    elif peerReviewMark is not None:
+        total = 0
+        for prm in PeerReviewMark.objects.filter(evaluation=e):
+            total += prm.mark
+        e.peerReviewMark = total
+    e.totalMark = int(e.peerReviewMark) + int(e.mentorReviewMark)
+    e.averageMark = round(e.totalMark / 2, 1)
+    e.rater = user
+    e.save()
+
     return HttpResponse('OK')
 
 
 def academic_pass(request):
     user = request.user
     taskId = request.POST.get('taskId')
-    e = Evaluation.objects.get(task_id=taskId, rater=user)
+    e = Evaluation.objects.get(task_id=taskId)
     e.isPass = True
     e.save()
     task = Task.objects.get(taskId=taskId)
@@ -249,7 +273,9 @@ def academic_pass(request):
     for student in students:
         for criterion in task.include_criterion.all():
             ucm = UserCriterionMark.objects.get_or_create(user=student, evaluation=e, criterion=criterion)[0]
-            pm = PeerReviewMark.objects.get(evaluation=e, criterion=criterion).mark
+            pm = 0
+            for prm in PeerReviewMark.objects.filter(evaluation=e, criterion=criterion):
+                pm += prm.mark
             mm = MentorMark.objects.get(evaluation=e, criterion=criterion).mark
             ucm.mark = pm + mm
             ucm.save()

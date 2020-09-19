@@ -56,29 +56,29 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for evaluation in evaluations %}
+                                {% for review in reviews %}
                                     <tr>
                                         <td>Student {{ forloop.counter }}</td>
                                         <td><span
-                                                id="evaluation-{{ forloop.counter }}">{{ evaluation.peerReviewMark }}</span>
+                                                id="evaluation-{{ forloop.counter }}">{{ review.1 }}</span>
                                         </td>
 {#                                        <td>{{ evaluation.averageMark }}</td>#}
 
-                                        {% ifequal user.id evaluation.rater_id %}
+                                        {% ifequal user.id review.0.id %}
                                         <td><a class="btn btn-warning btn-xs"
-                                               href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review-detail/{{ evaluation.rater_id }}">
+                                               href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review-detail/{{ review.0.id }}">
                                             Check your Rate
                                         </a></td>
                                             {% else %}
                                                                                     <td><a class="btn btn-info btn-xs"
-                                               href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review-detail/{{ evaluation.rater_id }}">
+                                               href="{% url 'wbl:tasks' %}{{ task.taskId }}/peer-review-detail/{{ review.0.id }}">
                                             Show Details
                                         </a></td>
                                     {% endifequal %}
                                     </tr>
                                 {% endfor %}
                                 <tr>
-                                    <td>Result</td>
+                                    <td>Total</td>
                                     <td><span id="evaluationTotalMark">0</span></td>
 {#                                    <td><span id="evaluationAvgMark">0</span></td>#}
                                     <td></td>
@@ -216,7 +216,7 @@
         });
     </script>
     <script>
-        var num = {{ evaluations|length }}
+        var num = {{ reviews|length }}
 
             $(document).ready(function () {
                 var sum = 0

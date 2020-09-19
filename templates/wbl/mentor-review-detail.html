@@ -292,7 +292,7 @@
                 </div>
                 <!-- /.col -->
             </div>
-        {% ifequal user.id rater.id %}
+            {% ifequal user.id rater.id %}
                 <div class="row">
                     <div class="col-12">
                         <input id="createNewTask" type="submit" value="Save Mark"
@@ -306,40 +306,43 @@
                 <div class="col-12">
                     <h4>Comments</h4>
                     {% for comment in comments %}
-                    <div class="post">
-                        <div class="user-block">
-                            <img class="img-circle img-bordered-sm"
-                                 src="{% static 'adminlte/dist/img/user1-128x128.jpg' %}" alt="user image">
-                            <span class="username">
+                        <div class="post">
+                            <div class="user-block">
+                                <img class="img-circle img-bordered-sm"
+                                     src="{% static 'adminlte/dist/img/user1-128x128.jpg' %}" alt="user image">
+                                <span class="username">
                           <a href="#">{{ comment.user }}</a>
                         </span>
-                            <span class="description">{{ comment.comment_time }}</span>
+                                <span class="description">{{ comment.comment_time }}</span>
+                            </div>
+                            <!-- /.user-block -->
+                            <p>
+                                {{ comment.comment }}
+                            </p>
                         </div>
-                        <!-- /.user-block -->
-                        <p>
-                            {{ comment.comment }}
-                        </p>
-                    </div>
                     {% endfor %}
                 </div>
             </div>
+        {% if user.userprofile.isMentor %}
             <div class="row">
-                            <div class="col-sm">
-                                <!-- textarea -->
-                                <div class="form-group">
-                                    <label>{{ user.username }}</label>
-                                    <textarea id="commentArea" class="form-control" rows="3"
-                                              placeholder="Add your comment ..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-          <div class="row">
-                            <div class="col-12">
-                                <button type="button" class="btn btn-success float-right"
-                                        onclick="AjaxAddComment()">Add Comment</button>
+                <div class="col-sm">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>{{ user.username }}</label>
+                        <textarea id="commentArea" class="form-control" rows="3"
+                                  placeholder="Add your comment ..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="button" class="btn btn-success float-right"
+                            onclick="AjaxAddComment()">Add Comment
+                    </button>
 
-                            </div>
-                        </div>
+                </div>
+            </div>
+        {% endif %}
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
