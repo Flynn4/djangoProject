@@ -1,16 +1,12 @@
 import os
-import time
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'djangoProject.settings')
 
 import django
-import requests
-import json
 
 django.setup()
 from wbl.models import *
-import re
 
 
 def populate():
