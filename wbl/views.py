@@ -198,7 +198,7 @@ def peer_review_detail(request, taskId, raterId):
     for prm in PeerReviewMark.objects.filter(evaluation=evaluation, rater=rater):
         totalMark += prm.mark
     return render(request, 'wbl/peer-review-detail.html',
-                  {'task': task, 'rater': rater, 'marks': marks, 'totalMark': totalMark})
+                  {'task': task, 'rater': rater, 'marks': marks, 'totalMark': totalMark, 'evaluation': evaluation})
 
 
 def choose_role(request):

@@ -95,6 +95,93 @@
                                             </div>
                                         </td>
                                         {% ifequal user.id rater.id %}
+                                            {% if evaluation.isPass%}
+                                            {% ifequal mark.mark 1 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="1"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="1"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 2 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="2"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="2"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 3 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="3"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="3"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 4 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="4"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="4"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% ifequal mark.mark 5 %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="5"
+                                                               name="radio-{{ forloop.counter }}" disabled checked>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="5"
+                                                               name="radio-{{ forloop.counter }}" disabled>
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </td>
+                                            {% endifequal %}
+                                            {% else %}
                                             {% ifequal mark.mark 1 %}
                                                 <td>
                                                     <div class="form-check">
@@ -180,6 +267,7 @@
                                                     </div>
                                                 </td>
                                             {% endifequal %}
+                                            {% endif %}
                                         {% else %}
                                             {% ifequal mark.mark 1 %}
                                                 <td>
@@ -293,6 +381,7 @@
                 <!-- /.col -->
             </div>
             {% ifequal user.id rater.id %}
+                {% if not evaluation.isPass %}
                 <div class="row">
                     <div class="col-12">
                         <input id="createNewTask" type="submit" value="Save Mark"
@@ -301,6 +390,7 @@
 
                     </div>
                 </div>
+                {% endif %}
             {% endifequal %}
             <div class="row">
                 <div class="col-12">
