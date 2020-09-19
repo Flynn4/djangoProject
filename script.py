@@ -38,25 +38,25 @@ def populate():
 
     criterions = [
         {'name': 'Project management',  # id:1
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Project management'},
         {'name': 'Requirement analysis',  # id:2
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Requirement analysis'},
         {'name': "Software design",  # id:3
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Software design'},
         {'name': 'Programming Quality/Tests',  # id:4
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Programming Quality/Tests'},
         {'name': 'Adaptation and use of tools to support influenced areas',  # id:5
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Adaptation and use of tools to support influenced areas'},
         {'name': 'Communication',  # id:6
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Communication'},
         {'name': 'Motivation',  # id:7
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Motivation'},
         {'name': 'Desires to contribute',  # id:8
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Desires to contribute'},
         {'name': 'Capability to learn alone, take risks, etc.',  # id:9
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Capability to learn alone, take risks, etc.'},
         {'name': 'Balance the necessary resources to satisfy multiple goals',  # id:10
-         'detail': 'testttttttttttttttttttttttttt'},
+         'detail': 'Test Detail for Balance the necessary resources to satisfy multiple goals'},
     ]
 
     for c in criterions:

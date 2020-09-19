@@ -179,10 +179,6 @@ def peer_review_detail(request, taskId, raterId):
                   {'task': task, 'rater': rater, 'marks': marks, 'evaluation': evaluation})
 
 
-def example_form(request):
-    return render(request, 'wbl/example-form.html')
-
-
 def choose_role(request):
     roles = Role.objects.all()
     return render(request, 'wbl/choose_role.html', {'roles': roles})
