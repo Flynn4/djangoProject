@@ -201,7 +201,6 @@ def get_choose_role(request):
             if team.member.count() <= 4:
                 team.member.add(user)
                 team.save()
-                u.save()
                 break
     if u.role.name == role_name:
         return HttpResponse('OK')
