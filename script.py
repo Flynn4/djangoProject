@@ -29,6 +29,19 @@ def populate():
         {'name': 'Maintenance engineer'},  # id:10
     ]
 
+    users = [
+        {'username': 'mentor1', 'password': 123456, 'email': 'mentor1@mentor1.com'},
+        {'username': 'mentor2', 'password': 123456, 'email': 'mentor2@mentor2.com'},
+        {'username': 'mentor3', 'password': 123456, 'email': 'mentor3@mentor3.com'},
+        {'username': 'mentor4', 'password': 123456, 'email': 'mentor4@mentor4.com'},
+        {'username': 'mentor5', 'password': 123456, 'email': 'mentor5@mentor5.com'},
+        {'username': 'mentor6', 'password': 123456, 'email': 'mentor6@mentor6.com'},
+        {'username': 'mentor7', 'password': 123456, 'email': 'mentor7@mentor7.com'},
+        {'username': 'mentor8', 'password': 123456, 'email': 'mentor8@mentor8.com'},
+        {'username': 'mentor9', 'password': 123456, 'email': 'mentor9@mentor9.com'},
+        {'username': 'mentor10', 'password': 123456, 'email': 'mentor10@mentor10.com'},
+    ]
+
     for r in roles:
         add_roles(r['name'])
 
@@ -95,6 +108,9 @@ def populate():
         role_have_criterion(rc, 4)
         role_have_criterion(rc, 5)
 
+    for u in users:
+        add_user(u['username'], u['password'], u['email'])
+
 
 def add_roles(name):
     r = Role.objects.get_or_create(name=name)[0]
@@ -114,6 +130,12 @@ def role_have_criterion(roleId, criterionId):
     r.role_have.add(c)
     r.save()
     return r
+
+
+def add_user(username, password, email):
+    u = User.objects.get_or_create(username=username, password=password, email=email)[0]
+    u.save()
+    return u
 
 
 # Start execution here!
