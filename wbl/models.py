@@ -43,14 +43,6 @@ class Role(models.Model):
         return ','.join([i.name for i in self.role_have.all()])
 
 
-# class Have(models.Model):
-#     criterion = models.ForeignKey(Criterion, null=True, blank=True, default=None, on_delete=models.CASCADE)
-#     role = models.ForeignKey(Role, null=True, blank=True, default=None, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         db_table = 'role_criterion'
-
-
 class Evaluation(models.Model):
     task = models.ForeignKey(Task, null=True, blank=True, default=None, on_delete=models.CASCADE)
     rater = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE)
